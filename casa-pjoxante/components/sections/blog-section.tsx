@@ -32,7 +32,7 @@ const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
         id: "1",
         title: "La importancia de la educación comunitaria en tiempos de cambio",
         excerpt: "Reflexiones sobre cómo la educación popular se adapta a los desafíos contemporáneos y mantiene su relevancia...",
-        image: "/api/placeholder/400/250",
+        image: "/next.svg",
         author: "María González",
         publishDate: "15 de Febrero, 2024",
         category: "Educación"
