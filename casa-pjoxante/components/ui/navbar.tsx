@@ -23,7 +23,12 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center space-x-3">
+            <img
+              src="/LogosCasaPjoxante/Casa%20Pjoxante%20isotipo.jpg"
+              alt="Logo Casa Pjoxante"
+              className="h-12 w-auto transition-transform duration-300 hover:scale-105"
+            />
               <div className="font-bold text-xl text-pjoxante-green font-cerco">
                 Casa Pjoxante
               </div>
