@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "shadcn/ui Component Showcase - Casa Pjoxante",
-  description: "Comprehensive showcase of all shadcn/ui components with maximum interactivity",
+  title: "Casa Pjoxante - Transformando comunidades a través del buen vivir",
+  description: "Casa de Estudios, Investigación y Promoción del Buen Vivir Pjoxante A.C. Construyendo un futuro sostenible junto a las comunidades.",
+  keywords: "Casa Pjoxante, educación comunitaria, transformación social, desarrollo sostenible, arte comunitario, salud integral",
+  authors: [{ name: "Casa Pjoxante" }],
+  creator: "Casa Pjoxante",
+  openGraph: {
+    title: "Casa Pjoxante - Transformando comunidades",
+    description: "Construyendo un futuro sostenible junto a las comunidades a través de la educación, investigación y promoción del buen vivir.",
+    url: "https://casapjoxante.org",
+    siteName: "Casa Pjoxante",
+    locale: "es_MX",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Casa Pjoxante - Transformando comunidades",
+    description: "Construyendo un futuro sostenible junto a las comunidades.",
+  },
+  viewport: "width=device-width, initial-scale=1",
+  robots: "index, follow",
 };
 
 export default function RootLayout({
@@ -24,14 +31,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="es" suppressHydrationWarning>
+      <body className="antialiased" style={{ fontFamily: "'Century Gothic', Arial, sans-serif" }}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          enableSystem={false}
           disableTransitionOnChange
         >
           {children}
