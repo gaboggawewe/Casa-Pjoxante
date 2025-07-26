@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -51,26 +52,27 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  /* Primary color using Casa Pjoxante green */
+  --primary: hsl(112, 43%, 37%); /* #3E8D35 */
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
+  --secondary: hsl(30, 23%, 62%); /* #8C6853 brown-light */
+  --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --accent: hsl(88, 71%, 69%); /* #C1DCAB green-light */
+  --accent-foreground: hsl(24, 34%, 29%); /* #49362E brown-medium */
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --ring: hsl(112, 43%, 37%); /* matching primary */
+  --chart-1: hsl(112, 43%, 37%); /* pjoxante-green */
+  --chart-2: hsl(30, 23%, 62%); /* pjoxante-brown-light */
+  --chart-3: hsl(88, 71%, 69%); /* pjoxante-green-light */
+  --chart-4: hsl(167, 48%, 52%); /* pjoxante-turquoise */
+  --chart-5: hsl(191, 60%, 58%); /* pjoxante-blue */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary: hsl(112, 43%, 37%); /* pjoxante-green */
   --sidebar-primary-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
@@ -118,5 +120,86 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Century Gothic', Arial, sans-serif;
   }
+}
+
+/* Font utility classes */
+.font-century {
+  font-family: 'Century Gothic', Arial, sans-serif;
+}
+
+.font-cerco {
+  font-family: 'Century Gothic', Arial, sans-serif; /* fallback until Cerco is available */
+}
+
+/* Casa Pjoxante Typography */
+
+/* Custom classes for Casa Pjoxante branding */
+.pjoxante-primary {
+  color: #3E8D35;
+}
+
+.pjoxante-bg-primary {
+  background-color: #3E8D35;
+}
+
+.pjoxante-brown {
+  color: #8C6853;
+}
+
+.pjoxante-bg-brown {
+  background-color: #8C6853;
+}
+
+.pjoxante-primary-light {
+  color: #C1DCAB; /* verde claro suave */
+}
+
+.pjoxante-bg-primary-light {
+  background-color: #C1DCAB;
+}
+
+.pjoxante-accent-foreground {
+  color: #49362E; /* marrón medio */
+}
+
+.pjoxante-secondary {
+  color: #8C6853; /* puedes usar marrón claro (igual que pjoxante-brown) */
+}
+
+.pjoxante-turquoise {
+  color: hsl(167, 48%, 52%); /* turquesa */
+}
+
+.pjoxante-bg-turquoise {
+  background-color: hsl(167, 48%, 52%);
+}
+
+.pjoxante-blue {
+  color: hsl(191, 60%, 58%); /* azul */
+}
+
+.pjoxante-bg-blue {
+  background-color: hsl(191, 60%, 58%);
+}
+
+/* Floating donation button styles */
+.donation-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #3E8D35;
+  color: white;
+  border-radius: 50px;
+  padding: 12px 24px;
+  box-shadow: 0 4px 12px rgba(62, 141, 53, 0.3);
+  transition: all 0.3s ease;
+}
+
+.donation-button:hover {
+  background-color: #2d6627;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(62, 141, 53, 0.4);
 }

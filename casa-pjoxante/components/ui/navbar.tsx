@@ -25,11 +25,11 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3">
             <img
-              src="/LogosCasaPjoxante/Casa%20Pjoxante%20isotipo.jpg"
+              src="/LogosCasaPjoxante/Casa%20Pjoxante%20isotipo.png"
               alt="Logo Casa Pjoxante"
               className="h-12 w-auto transition-transform duration-300 hover:scale-105"
             />
-              <div className="font-bold text-xl text-pjoxante-green font-cerco">
+              <div className="font-bold text-xl text-black font-cerco">
                 Casa Pjoxante
               </div>
             </Link>
@@ -40,7 +40,10 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-pjoxante-green hover:bg-pjoxante-green-light/50 rounded-md transition-colors font-century"
+                  className="px-3 py-2 text-sm font-normal text-black rounded-md 
+                  hover:underline
+                  hover:drop-shadow-lg transition duration-300 transform 
+                  hover:-translate-y-1 font-century"
                 >
                   {item.label}
                 </Link>
