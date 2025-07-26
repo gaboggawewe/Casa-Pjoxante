@@ -40,7 +40,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
               )}>
                 <span className="font-normal ">Construímos un futuro mejor junto con las comunidades a través de la </span>
                 <span className="font-bold pjoxante-primary">solidaridad, 
-                unidad, trabajo y ecología en equipo. </span>
+                unidad, trabajo en equipo y ecología. </span>
                 <span className="font-normal ">Promovemos un futuro sostenible y en armonía con la naturaleza. </span>
 
               </p>

@@ -121,8 +121,8 @@
   body {
     @apply text-foreground;
     background: linear-gradient(135deg, 
-      hsl(88, 71%, 69%, 0.15), 
-      hsl(112, 43%, 37%, 0.08)
+      hsl(30, 23%, 62%, 0.10), 
+      hsl(24, 34%, 29%, 0.05)
     );
     font-family: 'Century Gothic', Arial, sans-serif;
   }
@@ -154,6 +154,10 @@
 
 .pjoxante-bg-brown {
   background-color: #8C6853;
+}
+
+.pjoxante-bg-brown-light {
+  background-color: rgba(140, 104, 83, 0.15);
 }
 
 .pjoxante-primary-light {

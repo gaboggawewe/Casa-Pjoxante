@@ -66,7 +66,7 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
 
   return (
     <div className={cn(
-      "bg-white rounded-lg p-6 flex flex-col w-96 h-[500px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
+      "rounded-lg p-6 flex flex-col w-96 h-[500px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
       className
     )}>
       {/* Header */}
@@ -117,7 +117,7 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Escribe tu mensaje aquí"
-            className="w-full p-3 border-none rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#3E8D35] bg-gray-50 text-base"
+            className="w-full p-3 border-none rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-[#3E8D35] text-base"
             rows={2}
             disabled={isLoading}
           />

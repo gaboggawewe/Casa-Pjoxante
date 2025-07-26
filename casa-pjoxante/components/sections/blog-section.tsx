@@ -144,7 +144,7 @@ const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
         {/* Call to Action */}
         <div className="text-center mt-12">
           <Link href="/blog">
-            <PjoxanteButton size="lg" className="inline-flex items-center gap-2">
+            <PjoxanteButton size="lg" className="inline-flex items-center gap-2 text-black">
               Ver todos los artículos
               <ArrowRight className="h-4 w-4" />
             </PjoxanteButton>
