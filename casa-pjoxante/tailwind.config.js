@@ -40,6 +40,7 @@ module.exports = {
           'purple': '#523089',
           'lilac': '#9474B2',
         },
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

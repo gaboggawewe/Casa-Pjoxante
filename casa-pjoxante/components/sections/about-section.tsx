@@ -97,7 +97,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
         <div className="mt-20">
           <div className="text-center mb-12">
             <h3 className={cn(
-              "font-bold text-pjoxante-green font-cerco mb-4",
+              "font-bold text-pjoxante-primary font-cerco mb-4",
               COMPONENT_SIZES.section.title
             )}>
               Nuestros Valores
@@ -114,12 +114,17 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
             {values.map((value, index) => {
               const IconComponent = value.icon
               return (
-                <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-pjoxante-green-light/50 hover:border-pjoxante-green">
+                <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-[#C1DCAB]/50 
+                                            hover:border-[#3E8D35] hover:scale-100 
+                                            hover:-translate-y-2
+                                            transform" 
+                >
                   <CardContent className="p-6 text-center space-y-4">
-                    <div className="mx-auto w-16 h-16 bg-pjoxante-green-light rounded-full flex items-center justify-center group-hover:bg-pjoxante-green group-hover:text-white transition-colors duration-300">
-                      <IconComponent className="h-8 w-8 text-pjoxante-green group-hover:text-white" />
+                    <div className="mx-auto w-16 h-16 bg-[#C1DCAB] rounded-full flex items-center justify-center transition-all duration-300 transform group-hover:scale-110  
+                                    group-hover:bg-[#3E8D35] group-hover:text-white">
+                      <IconComponent className="h-8 w-8 text-[#3E8D35] group-hover:text-white" />
                     </div>
-                    <h4 className="font-semibold text-lg text-pjoxante-green font-cerco">
+                    <h4 className="font-semibold text-lg text-pjoxante-primary font-cerco">
                       {value.title}
                     </h4>
                     <p className="text-gray-600 text-sm font-century leading-relaxed">
