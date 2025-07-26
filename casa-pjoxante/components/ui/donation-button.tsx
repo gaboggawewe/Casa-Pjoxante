@@ -29,7 +29,7 @@ const DonationButton = React.forwardRef<HTMLButtonElement, DonationButtonProps>(
           size="donation"
           onClick={handleClick}
           className={cn(
-            "donation-button font-medium text-sm flex items-center gap-2 animate-pulse",
+            "donation-button font-medium text-sm flex items-center gap-2",
             className
           )}
         >

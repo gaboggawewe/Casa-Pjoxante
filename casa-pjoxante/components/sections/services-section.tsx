@@ -38,7 +38,7 @@ const ServicesSection = React.forwardRef<HTMLElement, ServicesSectionProps>(
       <SectionContainer
         ref={ref}
         id="servicios"
-        className={cn("bg-white", className)}
+        className={cn(className)}
         padding="xl"
       >
         {/* Section Header */}

@@ -8,26 +8,50 @@ import { ServicesSection } from "@/components/sections/services-section"
 import { Footer } from "@/components/ui/footer"
 import { DonationButton } from "@/components/ui/donation-button"
 import { ChatWidget } from "@/components/ui/chat-widget"
+import { AnimatedSection } from "@/components/ui/animated-section"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navbar />
       
       <main>
-        <HeroSection />
-        <ProjectsSection />
-        <AboutSection />
-        <CoursesSection />
-        <BlogSection />
-        <ServicesSection />
+        <div id="inicio">
+          <HeroSection />
+        </div>
+        <AnimatedSection direction="up">
+          <div id="pack">
+            <ProjectsSection />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection direction="up">
+          <div id="sobre-la-casa">
+            <AboutSection />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection direction="up">
+          <div id="cursos">
+            <CoursesSection />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection direction="up">
+          <BlogSection />
+        </AnimatedSection>
+        <AnimatedSection direction="up">
+          <div id="servicios">
+            <ServicesSection />
+          </div>
+        </AnimatedSection>
       </main>
 
-      <Footer />
+      <AnimatedSection delay={0.5}>
+        <div id="contacto">
+          <Footer />
+        </div>
+      </AnimatedSection>
       
       {/* Fixed Elements */}
       <DonationButton href="https://donorbox.org/casa-pjoxante" />
-      <ChatWidget />
     </div>
   )
 }
