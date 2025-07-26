@@ -115,24 +115,28 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
               )}>
                 Casa Pjoxante
               </h1>
-              <p className="text-pjoxante-brown-medium font-medium text-lg md:text-xl">
-                Casa de Estudios, Investigación y Promoción del Buen Vivir Pjoxante A.C.
+              <p className="pjoxante-bg-primary-light pjoxante-primary rounded-md px-3 py-1 font-bold text-lg md:text-md">
+              <span className="font-bold ">˖✧ </span>
+              <span className="font-bold">Casa de Estudios, Investigación y Promoción del Buen Vivir</span> 
               </p>
               <p className={cn(
-                "text-gray-700 font-century max-w-2xl",
+                "text-black font-century max-w-2xl",
                 COMPONENT_SIZES.hero.subtitle
               )}>
-                Construyendo un futuro mejor junto con las comunidades a través de la solidaridad, 
-                unidad, trabajo y ecología en equipo. Promovemos un futuro sostenible y en armonía con la naturaleza.
+                <span className="font-normal ">Construímos un futuro mejor junto con las comunidades a través de la </span>
+                <span className="font-bold pjoxante-primary">solidaridad, 
+                unidad, trabajo y ecología en equipo. </span>
+                <span className="font-normal ">Promovemos un futuro sostenible y en armonía con la naturaleza. </span>
+
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <PjoxanteButton size="lg" className="text-lg">
-                Conoce Más
+              <PjoxanteButton size="lg" className="text-lg pjoxante-bg-primary font-bold text-white transition duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+                Conoce Más ➜
               </PjoxanteButton>
-              <PjoxanteButton variant="outline" size="lg" className="text-lg">
-                Únete a la Comunidad
+              <PjoxanteButton variant="outline" size="lg" className="text-lg pjoxante-bg-primary font-bold text-white transition duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+                ¡Únete a la Comunidad!
               </PjoxanteButton>
             </div>
 
@@ -159,9 +163,9 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
               <div className="bg-pjoxante-green text-white p-4 rounded-t-lg">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="h-5 w-5" />
-                  <h3 className="font-medium">¡Hablemos!</h3>
+                  <h3 className="font-medium text-black">¡Hablemos!</h3>
                 </div>
-                <p className="text-sm text-pjoxante-green-light mt-1">
+                <p className="text-sm text-black mt-1">
                   Nuestro asistente está aquí para ayudarte
                 </p>
               </div>

@@ -152,6 +152,38 @@
   background-color: #8C6853;
 }
 
+.pjoxante-primary-light {
+  color: #C1DCAB; /* verde claro suave */
+}
+
+.pjoxante-bg-primary-light {
+  background-color: #C1DCAB;
+}
+
+.pjoxante-accent-foreground {
+  color: #49362E; /* marrón medio */
+}
+
+.pjoxante-secondary {
+  color: #8C6853; /* puedes usar marrón claro (igual que pjoxante-brown) */
+}
+
+.pjoxante-turquoise {
+  color: hsl(167, 48%, 52%); /* turquesa */
+}
+
+.pjoxante-bg-turquoise {
+  background-color: hsl(167, 48%, 52%);
+}
+
+.pjoxante-blue {
+  color: hsl(191, 60%, 58%); /* azul */
+}
+
+.pjoxante-bg-blue {
+  background-color: hsl(191, 60%, 58%);
+}
+
 /* Floating donation button styles */
 .donation-button {
   position: fixed;
