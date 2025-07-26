@@ -21,7 +21,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
     }
 
     return (
-      <footer ref={ref} className={cn("bg-pjoxante-green text-white", className)}>
+      <footer ref={ref} className={cn("bg-pjoxante-green text-black", className)}>
         <SectionContainer padding="lg">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}

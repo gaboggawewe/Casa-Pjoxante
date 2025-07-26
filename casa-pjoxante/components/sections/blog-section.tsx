@@ -60,7 +60,7 @@ const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
     return (
       <SectionContainer
         ref={ref}
-        className={cn("bg-gray-50", className)}
+        className={cn(className)}
         padding="xl"
       >
         {/* Section Header */}

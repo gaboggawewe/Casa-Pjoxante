@@ -49,7 +49,7 @@ const ProjectsSection = React.forwardRef<HTMLElement, ProjectsSectionProps>(
     return (
       <SectionContainer
         ref={ref}
-        className={cn("bg-white", className)}
+        className={cn(className)}
         padding="xl"
       >
         {/* Section Header */}

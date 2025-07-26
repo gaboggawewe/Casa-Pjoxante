@@ -108,7 +108,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
       <SectionContainer
         ref={ref}
         id="cursos"
-        className={cn("bg-gradient-to-b from-pjoxante-green-light/10 to-white", className)}
+        className={cn(className)}
         padding="xl"
       >
         {/* Section Header */}

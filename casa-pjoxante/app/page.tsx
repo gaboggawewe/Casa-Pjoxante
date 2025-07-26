@@ -11,7 +11,7 @@ import { ChatWidget } from "@/components/ui/chat-widget"
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <Navbar />
       
       <main>
@@ -27,7 +27,6 @@ export default function Home() {
       
       {/* Fixed Elements */}
       <DonationButton href="https://donorbox.org/casa-pjoxante" />
-      <ChatWidget />
     </div>
   )
 }

@@ -42,7 +42,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
       <SectionContainer
         ref={ref}
         id="sobre-la-casa"
-        className={cn("bg-gradient-to-b from-white to-pjoxante-green-light/20", className)}
+        className={cn(className)}
         padding="xl"
       >
         <div className="grid lg:grid-cols-2 gap-12 items-center">
