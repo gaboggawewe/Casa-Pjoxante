@@ -21,14 +21,14 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
     }
 
     return (
-      <footer ref={ref} className={cn("bg-pjoxante-green text-black", className)}>
+      <footer ref={ref} className={cn("bg-[#49362E] text-white", className)}>
         <SectionContainer padding="lg">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="lg:col-span-2 space-y-4">
               <div>
-                <h3 className="font-bold text-xl font-cerco mb-2">Casa Pjoxante</h3>
-                <p className="text-pjoxante-green-light text-sm leading-relaxed font-century">
+                <h3 className="font-bold text-xl text-white font-cerco mb-2">Casa Pjoxante</h3>
+                <p className="text-white text-sm leading-relaxed font-century">
                   {CONTACT_INFO.description}
                 </p>
               </div>
@@ -36,7 +36,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
               {/* Contact Info */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm">
-                  <Mail className="h-4 w-4 flex-shrink-0" />
+                  <Mail className="h-4 w-4 flex-shrink-0 text-[#C1DCAB]" />
                   <a 
                     href={`mailto:${CONTACT_INFO.email}`}
                     className="hover:text-pjoxante-green-light transition-colors"
@@ -45,7 +45,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  <Phone className="h-4 w-4 flex-shrink-0 text-[#C1DCAB]" />
                   <a 
                     href={`tel:${CONTACT_INFO.phone}`}
                     className="hover:text-pjoxante-green-light transition-colors"
@@ -54,7 +54,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                   </a>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
-                  <MapPin className="h-4 w-4 flex-shrink-0" />
+                  <MapPin className="h-4 w-4 flex-shrink-0 text-[#C1DCAB]" />
                   <span>{CONTACT_INFO.location}</span>
                 </div>
               </div>
@@ -68,7 +68,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="text-sm text-pjoxante-green-light hover:text-white transition-colors font-century"
+                    className="text-sm text-pjoxante-green-light hover:text-[#C1DCAB] hover:underline transition-colors font-century"
                   >
                     {item.label}
                   </Link>
@@ -88,7 +88,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-10 h-10 bg-pjoxante-green-light/20 rounded-full flex items-center justify-center hover:bg-white hover:text-pjoxante-green transition-all duration-300"
+                      className="w-10 h-10 bg-[#C1DCAB]/20 rounded-full flex items-center justify-center hover:bg-white hover:text-[#8C6853] transition-all duration-300"
                       aria-label={`Síguenos en ${platform}`}
                     >
                       <IconComponent className="h-5 w-5" />
@@ -107,11 +107,11 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
                   <input
                     type="email"
                     placeholder="Tu email"
-                    className="flex-1 px-3 py-2 text-sm text-gray-900 rounded-l-md border-0 focus:ring-2 focus:ring-white focus:outline-none"
+                    className="flex-1 px-3 py-2 text-sm text-[#C1DCAB]/70 rounded-l-md border-0 ring-2 ring-white/40 focus:ring-2 focus:ring-white focus:outline-none"
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-pjoxante-brown-light hover:bg-pjoxante-brown-medium text-white text-sm rounded-r-md transition-colors"
+                    className="px-4 py-2 bg-[#3E8D35]/65 hover:bg-[#3E8D35] text-white font-bold text-sm rounded-r-md transition-colors"
                   >
                     Suscribirse
                   </button>
@@ -121,7 +121,7 @@ const Footer = React.forwardRef<HTMLElement, FooterProps>(
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-pjoxante-green-light/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-pjoxante-green-light">
+          <div className="border-t border-[#C1DCAB]/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-pjoxante-green-light">
             <div className="font-century">
               © 2024 Casa Pjoxante. Todos los derechos reservados.
             </div>
