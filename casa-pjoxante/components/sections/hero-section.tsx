@@ -6,6 +6,8 @@ import { SectionContainer } from "@/components/ui/section-container"
 import { PjoxanteButton } from "@/components/ui/pjoxante-button"
 import { ChatInterface } from "@/components/ui/chat-interface"
 import { COMPONENT_SIZES } from "@/lib/constants"
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll"
+import { useRouter, usePathname } from "next/navigation"
 
 interface HeroSectionProps {
   className?: string
@@ -13,6 +15,23 @@ interface HeroSectionProps {
 
 const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
   ({ className }, ref) => {
+    const { scrollToSection } = useSmoothScroll()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const handleNavClick = (href: string) => {
+      if (href.startsWith('#')) {
+        const sectionId = href.substring(1)
+        
+        // Si no estamos en la página principal, navegar primero
+        if (pathname !== '/') {
+          router.push(`/${href}`)
+        } else {
+          // Si estamos en la página principal, hacer scroll suave
+          scrollToSection(sectionId)
+        }
+      }
+    }
 
     return (
       <SectionContainer
@@ -47,7 +66,11 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <PjoxanteButton size="lg" className="text-lg pjoxante-bg-primary font-bold text-white transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl">
+              <PjoxanteButton 
+                size="lg" 
+                className="text-lg pjoxante-bg-primary font-bold text-white transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl"
+                onClick={() => handleNavClick('#sobre-la-casa')}
+              >
                 Conoce Más ➜
               </PjoxanteButton>
               <PjoxanteButton variant="outline" size="lg" className="text-lg pjoxante-bg-primary font-bold text-white transition duration-300 transform hover:-translate-y-0.5 hover:shadow-xl">
