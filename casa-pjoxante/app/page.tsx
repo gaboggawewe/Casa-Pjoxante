@@ -2,12 +2,12 @@ import { Navbar } from "@/components/ui/navbar"
 import { HeroSection } from "@/components/sections/hero-section"
 import { ProjectsSection } from "@/components/sections/projects-section"
 import { AboutSection } from "@/components/sections/about-section"
+import { ValoresSection } from "@/components/sections/values-section"
 import { CoursesSection } from "@/components/sections/courses-section"
 import { BlogSection } from "@/components/sections/blog-section"
 import { ServicesSection } from "@/components/sections/services-section"
 import { Footer } from "@/components/ui/footer"
 import { DonationButton } from "@/components/ui/donation-button"
-import { ChatWidget } from "@/components/ui/chat-widget"
 import { AnimatedSection } from "@/components/ui/animated-section"
 
 export default function Home() {
@@ -30,6 +30,11 @@ export default function Home() {
           </div>
         </AnimatedSection>
         <AnimatedSection direction="up">
+          <div id="valores">
+            <ValoresSection />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection direction="up">
           <div id="cursos">
             <CoursesSection />
           </div>
@@ -44,7 +49,7 @@ export default function Home() {
         </AnimatedSection>
       </main>
 
-      <AnimatedSection delay={0.5}>
+      <AnimatedSection>
         <div id="contacto">
           <Footer />
         </div>

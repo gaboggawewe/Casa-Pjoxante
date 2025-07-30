@@ -20,13 +20,8 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hola, ¿cómo estás?',
+      text: 'Hola, puedes preguntarme lo que quieras sobre nosotros. ¡Estoy aquí para ayudarte!',
       sender: 'assistant'
-    },
-    {
-      id: '2', 
-      text: '¡Bien, gracias por preguntar! ¿En qué puedo ayudarte hoy?',
-      sender: 'user'
     }
   ])
   const [inputMessage, setInputMessage] = useState('')

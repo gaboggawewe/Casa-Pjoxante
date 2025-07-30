@@ -30,7 +30,7 @@ export const NAVIGATION_ITEMS = [
   { label: 'Cursos', href: '#cursos' },
   { label: 'Blog', href: '/blog' },
   { label: 'Servicios', href: '#servicios' },
-  { label: 'Pack', href: '#pack' },
+  { label: 'Proyectos', href: '#pack' },
   { label: 'Consultorías', href: '/consultorias' },
   { label: 'Catálogo de libros', href: '/catalogo-libros' },
   { label: 'Contacto', href: '#contacto' },
