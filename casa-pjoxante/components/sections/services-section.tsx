@@ -113,7 +113,7 @@ const ServicesSection = React.forwardRef<HTMLElement, ServicesSectionProps>(
           <div className="max-w-3xl mx-auto">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-12 bg-pjoxante-green rounded-full flex items-center justify-center">
-                <Users className="h-6 w-6 text-white" />
+                <Users className="h-6 w-6 text-black" />
               </div>
             </div>
             <h3 className={cn(

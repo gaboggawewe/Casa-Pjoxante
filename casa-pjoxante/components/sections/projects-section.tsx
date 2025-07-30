@@ -15,31 +15,31 @@ const ProjectsSection = React.forwardRef<HTMLElement, ProjectsSectionProps>(
     // Mock project images - replace with real data
     const projectImages: CarouselImage[] = [
       {
-        src: "/api/placeholder/800/500",
+        src: "/FotosCasaPjoxante/pjoxante-alumnos.JPG",
         alt: "Taller de arte comunitario",
         title: "Taller de Arte Comunitario",
         description: "Fortaleciendo la identidad cultural a través del arte y la expresión creativa."
       },
       {
-        src: "/api/placeholder/800/500",
+        src: "/FotosCasaPjoxante/pjoxante-jardin.jpg",
         alt: "Programa de educación ambiental",
         title: "Educación Ambiental",
         description: "Promoviendo prácticas sostenibles y cuidado del medio ambiente."
       },
       {
-        src: "/api/placeholder/800/500", 
+        src: "/FotosCasaPjoxante/pjoxante-saxo.JPG", 
         alt: "Capacitación en salud comunitaria",
         title: "Salud Comunitaria",
         description: "Empoderando a las comunidades con conocimientos de salud preventiva."
       },
       {
-        src: "/api/placeholder/800/500",
+        src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.34 (2).jpeg",
         alt: "Huerto urbano comunitario",
         title: "Huertos Urbanos",
         description: "Construyendo soberanía alimentaria y espacios de encuentro."
       },
       {
-        src: "/api/placeholder/800/500",
+        src: "/FotosCasaPjoxante/pjoxante-curso.JPG",
         alt: "Biblioteca comunitaria",
         title: "Biblioteca Comunitaria",
         description: "Democratizando el acceso al conocimiento y la educación."

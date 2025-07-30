@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/ui/navbar"
 import { HeroSection } from "@/components/sections/hero-section"
+import { ChatSection } from "@/components/sections/chat-section"
 import { ProjectsSection } from "@/components/sections/projects-section"
 import { AboutSection } from "@/components/sections/about-section"
 import { ValoresSection } from "@/components/sections/values-section"
@@ -20,8 +21,8 @@ export default function Home() {
           <HeroSection />
         </div>
         <AnimatedSection direction="up">
-          <div id="pack">
-            <ProjectsSection />
+          <div id="chat">
+            <ChatSection />
           </div>
         </AnimatedSection>
         <AnimatedSection direction="up">
@@ -32,6 +33,11 @@ export default function Home() {
         <AnimatedSection direction="up">
           <div id="valores">
             <ValoresSection />
+          </div>
+        </AnimatedSection>
+        <AnimatedSection direction="up">
+          <div id="pack">
+            <ProjectsSection />
           </div>
         </AnimatedSection>
         <AnimatedSection direction="up">
