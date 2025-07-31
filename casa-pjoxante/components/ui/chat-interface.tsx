@@ -20,7 +20,7 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Hola, puedes preguntarme lo que quieras sobre nosotros. ¡Estoy aquí para ayudarte!',
+      text: 'Soy el asistente de Casa Pjoxante, puedes preguntarme lo que quieras sobre nosotros. ¡Estoy aquí para ayudarte!',
       sender: 'assistant'
     }
   ])
@@ -75,8 +75,8 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
             className="object-contain"
           />
         </div>
-        <div className="text-[#3E8D35] font-medium text-xl font-century">
-          Chat
+        <div className="text-[#3E8D35] font-bold text-xl font-century">
+        Hola! ¿En que puedo ayudarte? ☺️
         </div>
       </div>
 

@@ -121,17 +121,10 @@
   body {
     @apply text-foreground;
     background: linear-gradient(135deg, 
-      hsl(30, 23%, 62%, 0.15), 
-      hsl(24, 34%, 29%, 0.08)
-    );
-    font-family: 'Century Gothic', Arial, sans-serif;
-  }
-  
-  .bg-layout-gradient {
-    background: linear-gradient(135deg, 
-      hsl(30, 23%, 62%, 0.08), 
+      hsl(30, 23%, 62%, 0.10), 
       hsl(24, 34%, 29%, 0.05)
     );
+    font-family: 'Century Gothic', Arial, sans-serif;
   }
 }
 
@@ -184,7 +177,7 @@
 }
 
 .pjoxante-turquoise {
-  color: hsl(167, 48%, 52%); /* turquesa */
+  color: #49B59E; /* turquesa */
 }
 
 .pjoxante-bg-turquoise {
@@ -217,4 +210,21 @@
   background-color: #2d6627;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(62, 141, 53, 0.4);
+}
+
+@layer utilities {
+  @keyframes fade-carousel {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    10%, 90% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-carousel {
+    animation: fade-carousel 9s infinite;
+  }
 }
