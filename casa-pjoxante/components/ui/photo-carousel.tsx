@@ -70,7 +70,7 @@ const PhotoCarousel = React.forwardRef<HTMLDivElement, PhotoCarouselProps>(
     return (
       <div ref={ref} className={cn("relative overflow-hidden rounded-lg", className)}>
         {/* Main image container */}
-        <div className="relative h-64 md:h-80 lg:h-96">
+        <div className="relative h-80 md:h-96 lg:h-[28rem]">
           <div 
             className="flex transition-transform duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -110,17 +110,17 @@ const PhotoCarousel = React.forwardRef<HTMLDivElement, PhotoCarouselProps>(
         {showArrows && images.length > 1 && (
           <>
             <PjoxanteButton
-              variant="secondary"
+              variant="primary"
               size="icon"
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-[#3E8D35]/50 hover:bg-[#3E8D35] text-white shadow-lg transition-all duration-500 hover:scale-105"
               onClick={goToPrevious}
             >
               <ChevronLeft className="h-4 w-4" />
             </PjoxanteButton>
             <PjoxanteButton
-              variant="secondary"
+              variant="primary"
               size="icon"
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-lg"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-[#3E8D35]/50 hover:bg-[#3E8D35] text-white shadow-lg transition-all duration-500 hover:scale-105"
               onClick={goToNext}
             >
               <ChevronRight className="h-4 w-4" />
