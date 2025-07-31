@@ -121,16 +121,16 @@
   body {
     @apply text-foreground;
     background: linear-gradient(135deg, 
-      hsl(30, 23%, 62%, 0.18), 
-      hsl(24, 34%, 29%, 0.10)
+      hsl(30, 23%, 62%, 0.15), 
+      hsl(24, 34%, 29%, 0.08)
     );
     font-family: 'Century Gothic', Arial, sans-serif;
   }
   
   .bg-layout-gradient {
     background: linear-gradient(135deg, 
-      hsl(30, 23%, 62%, 0.18), 
-      hsl(24, 34%, 29%, 0.10)
+      hsl(30, 23%, 62%, 0.08), 
+      hsl(24, 34%, 29%, 0.05)
     );
   }
 }

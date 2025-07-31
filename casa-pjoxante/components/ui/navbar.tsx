@@ -69,7 +69,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                   <button
                     key={item.label}
                     onClick={() => handleNavClick(item.href)}
-                    className="px-3 py-2 text-sm font-normal text-black rounded-md 
+                    className="px-3 py-2 text-base font-normal text-black rounded-md 
                     hover:underline
                     hover:drop-shadow-lg transition duration-300 transform 
                     hover:-translate-y-0.5 font-century"
@@ -80,7 +80,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                   <Link
                     key={item.label}
                     href={item.href}
-                    className="px-3 py-2 text-sm font-normal text-black rounded-md 
+                    className="px-3 py-2 text-base font-normal text-black rounded-md 
                     hover:underline
                     hover:drop-shadow-lg transition duration-300 transform 
                     hover:-translate-y-0.5 font-century"

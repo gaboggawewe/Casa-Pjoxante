@@ -4,6 +4,7 @@ import * as React from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { SectionContainer } from "@/components/ui/section-container"
+import { PjoxanteButton } from "@/components/ui/pjoxante-button"
 import { COMPONENT_SIZES } from "@/lib/constants"
 
 interface AboutSectionProps {
@@ -43,12 +44,12 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
         <div className="grid lg:grid-cols-2 gap-12 items-start">
         {/* Left Column - Content */}
         <div className="space-y-8">
-          <div className="space-y-4">
+          <div className="space-y-6">
             
-            <div className="bg-[#49B59E]/20 p-4 rounded-lg shadow-md border border-[#49B59E] 
-            hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-[#49B59E] font-bold text-xl flex items-center space-x-3 mb-3 font-century">
-                <span className="w-1.5 h-6 bg-[#49B59E] rounded-full"></span>
+            <div className="bg-pjoxante-green-light/10 bg-layout-gradient p-6 rounded-lg shadow border border-[#C1DCAB]/95 
+            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-2 transition-all duration-300 transform group">
+              <h3 className="text-pjoxante-green font-bold text-xl flex items-center space-x-3 mb-3 font-century">
+                <span className="w-1.5 h-6 bg-pjoxante-green rounded-full"></span>
                 <span>¿Qué hacemos?</span>
               </h3>
               <p className="text-black-700 font-century leading-relaxed">
@@ -58,10 +59,10 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
               </p>
             </div>
 
-            <div className="bg-[#49B59E]/20  p-4 rounded-lg shadow-md border border-[#49B59E] 
-                            hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-[#49B59E] font-bold text-xl flex items-center space-x-3 mb-3 font-century">
-                <span className="w-1.5 h-6 bg-[#49B59E] rounded-full"></span>
+            <div className="bg-pjoxante-green-light/10 bg-layout-gradient p-6 rounded-lg shadow border border-[#C1DCAB]/95 
+                            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-2 transition-all duration-300 transform group">
+              <h3 className="text-pjoxante-green font-bold text-xl flex items-center space-x-3 mb-3 font-century">
+                <span className="w-1.5 h-6 bg-pjoxante-green rounded-full"></span>
                 <span>¿Cómo lo hacemos?</span>
               </h3>
               <p className="text-black-700 font-century leading-relaxed">
@@ -73,7 +74,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
             </div>
           </div>
           
-          <PjoxanteButton variant="outline" size="lg" className="w-fit">
+          <PjoxanteButton size="lg" className="w-fit">
             Conoce nuestra historia ➜
           </PjoxanteButton>
         </div>
@@ -88,11 +89,8 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
                 className="object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#49B59E]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-pjoxante-green/30 to-transparent" />
             </div>
-            {/* Decorative element */}
-            <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-[#49B59E] rounded-full opacity-20 -z-10" />
-            <div className="absolute -top-6 -left-6 w-16 h-16 bg-[#8C6853] rounded-full opacity-30 -z-10" />
           </div>
         </div>
       </SectionContainer>

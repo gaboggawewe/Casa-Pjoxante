@@ -22,10 +22,10 @@ const SectionContainer = React.forwardRef<HTMLElement, SectionContainerProps>(
 
     const paddingClasses = {
       none: "",
-      sm: "py-8 px-4",
-      md: "py-12 px-6",
-      lg: "py-16 px-6 lg:px-8",
-      xl: "py-20 px-6 lg:px-8"
+      sm: "py-6 px-4",
+      md: "py-8 px-6",
+      lg: "py-12 px-6 lg:px-8",
+      xl: "py-16 px-6 lg:px-8"
     }
 
     return (
