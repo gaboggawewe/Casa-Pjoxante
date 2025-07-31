@@ -61,7 +61,7 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
 
   return (
     <div className={cn(
-      "rounded-lg p-6 flex flex-col w-96 h-[500px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
+      "rounded-lg p-6 flex flex-col w-full h-[450px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
       className
     )}>
       {/* Header */}

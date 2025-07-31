@@ -32,15 +32,12 @@ const ChatSection = React.forwardRef<HTMLElement, ChatSectionProps>(
             COMPONENT_SIZES.section.subtitle
           )}>
             ¿Tienes alguna pregunta o quieres conocer más sobre nuestros proyectos? 
-            Escríbenos y te responderemos lo antes posible.
           </p>
         </div>
 
         {/* Chat Interface */}
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-br from-white to-pjoxante-green-light/10 rounded-xl p-8 shadow-lg border border-pjoxante-green-light/50 hover:shadow-xl transition-all duration-300">
-            <ChatInterface className="mx-auto" />
-          </div>
+          <ChatInterface />
         </div>
       </SectionContainer>
     )
