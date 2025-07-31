@@ -15,11 +15,12 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <Navbar />
-      
-      <main>
-        <div id="inicio">
-          <HeroSection />
-        </div>
+      <main className="-mt-16">
+        <AnimatedSection direction="up">
+          <div id="inicio">
+            <HeroSection />
+          </div>
+        </AnimatedSection>
         <AnimatedSection direction="up">
           <div id="chat">
             <ChatSection />

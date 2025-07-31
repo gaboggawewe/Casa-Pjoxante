@@ -20,7 +20,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
     return (
       <section
         ref={ref}
-        className={cn("relative overflow-hidden w-full", className)}
+        className={cn("relative overflow-hidden w-full min-h-screen", className)}
       >
         {/* Background Image with Gradient Fade - Full Width */}
         <div 
@@ -42,7 +42,7 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
         </div>
         
         {/* Content Container with Padding */}
-        <div className="relative z-10 py-12 px-6 lg:px-8 mx-auto max-w-7xl">
+        <div className="relative z-10 pt-20 pb-12 px-6 lg:px-8 mx-auto max-w-7xl flex items-center min-h-screen">
           <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-8">
             <div className="flex justify-center">
@@ -65,15 +65,15 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
           {/* Statistics */}
           <div className="grid grid-cols-3 gap-8 pt-6 mt-8 border-t border-pjoxante-green-light">
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">15+</div>
-              <div className="text-sm text-gray-600">Años de experiencia</div>
+              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">696</div>
+              <div className="text-sm text-gray-600">Beneficiarios</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">500+</div>
-              <div className="text-sm text-gray-600">Familias beneficiadas</div>
+              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">6</div>
+              <div className="text-sm text-gray-600">Eventos realizados</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">25+</div>
+              <div className="text-2xl md:text-3xl font-bold text-pjoxante-green">5</div>
               <div className="text-sm text-gray-600">Proyectos activos</div>
             </div>
           </div>
