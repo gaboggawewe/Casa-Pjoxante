@@ -3,9 +3,6 @@
 import * as React from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import { SectionContainer } from "@/components/ui/section-container"
-import { PjoxanteButton } from "@/components/ui/pjoxante-button"
-import { COMPONENT_SIZES } from "@/lib/constants"
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll"
 import { useRouter, usePathname } from "next/navigation"
 
@@ -19,28 +16,34 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
     const router = useRouter()
     const pathname = usePathname()
 
-    const handleNavClick = (href: string) => {
-      if (href.startsWith('#')) {
-        const sectionId = href.substring(1)
-        
-        // Si no estamos en la página principal, navegar primero
-        if (pathname !== '/') {
-          router.push(`/${href}`)
-        } else {
-          // Si estamos en la página principal, hacer scroll suave
-          scrollToSection(sectionId)
-        }
-      }
-    }
 
     return (
-      <SectionContainer
-        ref={ref} 
-        as="section"
-        className={cn(className)}
-        padding="lg"
+      <section
+        ref={ref}
+        className={cn("relative overflow-hidden w-full", className)}
       >
-        <div className="max-w-4xl mx-auto text-center">
+        {/* Background Image with Gradient Fade - Full Width */}
+        <div 
+          className="absolute inset-0 z-0"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)'
+          }}
+        >
+          <Image
+            src="/FotosCasaPjoxante/collage_pjoxante.jpg"
+            alt="Casa Pjoxante Background"
+            fill
+            className="object-cover opacity-35"
+            priority
+          />
+          {/* Additional overlay for better text readability */}
+          <div className="absolute inset-0 bg-white/40"></div>
+        </div>
+        
+        {/* Content Container with Padding */}
+        <div className="relative z-10 py-12 px-6 lg:px-8 mx-auto max-w-7xl">
+          <div className="max-w-4xl mx-auto text-center">
           <div className="space-y-8">
             <div className="flex justify-center">
               <Image
@@ -74,8 +77,9 @@ const HeroSection = React.forwardRef<HTMLElement, HeroSectionProps>(
               <div className="text-sm text-gray-600">Proyectos activos</div>
             </div>
           </div>
+          </div>
         </div>
-      </SectionContainer>
+      </section>
     )
   }
 )

@@ -73,10 +73,6 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
               </p>
             </div>
           </div>
-          
-          <PjoxanteButton size="lg" className="w-fit">
-            Conoce nuestra historia ➜
-          </PjoxanteButton>
         </div>
 
           {/* Right Column - Image */}
