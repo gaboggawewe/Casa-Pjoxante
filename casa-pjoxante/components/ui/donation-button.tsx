@@ -25,16 +25,18 @@ const DonationButton = React.forwardRef<HTMLButtonElement, DonationButtonProps>(
       <div className="fixed bottom-5 right-5 z-50">
         <PjoxanteButton
           ref={ref}
-          variant="donation"
-          size="donation"
+          variant="outline"
+          size="lg"
           onClick={handleClick}
           className={cn(
-            "donation-button font-medium text-sm flex items-center gap-2",
+            "group font-medium text-sm flex items-center justify-center gap-2 rounded-full transition-all duration-1000 ease-in-out overflow-hidden w-12 h-12 p-3 hover:w-56 hover:px-6 hover:justify-start hover:bg-transparent hover:text-[#3E8D35]",
             className
           )}
         >
-          <Heart className="h-4 w-4 fill-current" />
-          Donar a Casa Pjoxante
+          <Heart className="!w-5 !h-5 flex-shrink-0" style={{ color: '#3E8D35', fill: '#3E8D35', stroke: '#3E8D35' }} />
+          <span className="whitespace-nowrap hidden group-hover:inline-block">
+            Donar a Casa Pjoxante
+          </span>
         </PjoxanteButton>
       </div>
     )

@@ -118,12 +118,12 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
           />
           <PjoxanteButton
             type="submit"
-            variant="primary"
-            size="default"
+            variant="outline"
+            size="lg"
             disabled={!inputMessage.trim() || isLoading}
-            className="mt-3 ml-3 bg-[#3E8D35] hover:bg-[#C1DCAB] hover:text-[#3E8D35] transition-colors text-base"
+            className="mt-3 ml-3 inline-flex items-center gap-2"
           >
-            <Send className="h-4 w-4 mr-2" />
+            <Send className="h-4 w-4" />
             Enviar
           </PjoxanteButton>
         </form>

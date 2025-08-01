@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { SectionContainer } from "@/components/ui/section-container"
 import { PjoxanteButton } from "@/components/ui/pjoxante-button"
+import { PhotoCarousel } from "@/components/ui/photo-carousel"
 import { COMPONENT_SIZES } from "@/lib/constants"
 
 interface AboutSectionProps {
@@ -47,7 +47,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
           <div className="space-y-6">
             
             <div className="bg-pjoxante-green-light/10 bg-layout-gradient p-6 rounded-lg shadow border border-[#C1DCAB]/95 
-            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-2 transition-all duration-300 transform group">
+            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-0.5 transition-all duration-300 transform group">
               <h3 className="text-pjoxante-green font-bold text-xl flex items-center space-x-3 mb-3 font-century">
                 <span className="w-1.5 h-6 bg-pjoxante-green rounded-full"></span>
                 <span>¿Qué hacemos?</span>
@@ -60,7 +60,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
             </div>
 
             <div className="bg-pjoxante-green-light/10 bg-layout-gradient p-6 rounded-lg shadow border border-[#C1DCAB]/95 
-                            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-2 transition-all duration-300 transform group">
+                            hover:shadow-lg hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-0.5 transition-all duration-300 transform group">
               <h3 className="text-pjoxante-green font-bold text-xl flex items-center space-x-3 mb-3 font-century">
                 <span className="w-1.5 h-6 bg-pjoxante-green rounded-full"></span>
                 <span>¿Cómo lo hacemos?</span>
@@ -75,18 +75,36 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
           </div>
         </div>
 
-          {/* Right Column - Image */}
+          {/* Right Column - Photo Carousel */}
           <div className="relative">
-            <div className="relative h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300">
-              <Image
-                src="/FotosCasaPjoxante/pjoxante_about.jpeg"
-                alt="Casa Pjoxante Inauguración"
-                fill
-                className="object-cover transform group-hover:scale-105 transition-transform duration-500 ease-in-out"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-pjoxante-green/30 to-transparent" />
-            </div>
+            <PhotoCarousel
+              images={[
+                {
+                  src: "/FotosCasaPjoxante/pjoxante_about.jpeg",
+                  alt: "Casa Pjoxante Inauguración"
+                },
+                {
+                  src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.34 (2).jpeg",
+                  alt: "Casa Pjoxante"
+                },
+                {
+                  src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.35 (4).jpeg",
+                  alt: "Casa Pjoxante"
+                },
+                {
+                  src: "/FotosCasaPjoxante/IMG_2150.JPG",
+                  alt: "Casa Pjoxante"
+                },
+                {
+                  src: "/FotosCasaPjoxante/IMG_2163.JPG",
+                  alt: "Casa Pjoxante"
+                }
+              ]}
+              className="shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
+              autoPlay={true}
+              showIndicators={true}
+              showArrows={false}
+            />
           </div>
         </div>
       </SectionContainer>

@@ -97,7 +97,7 @@ const ServicesSection = React.forwardRef<HTMLElement, ServicesSectionProps>(
 
                   {/* Action Button */}
                   <Link href={service.link}>
-                    <PjoxanteButton className="w-full inline-flex items-center gap-2 group-hover:shadow-lg">
+                    <PjoxanteButton variant="outline" size="lg" className="w-full inline-flex items-center gap-2 group-hover:shadow-lg">
                       Conocer más
                       <ArrowRight className="h-4 w-4" />
                     </PjoxanteButton>
