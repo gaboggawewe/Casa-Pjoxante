@@ -76,8 +76,8 @@ const ProjectsSection = React.forwardRef<HTMLElement, ProjectsSectionProps>(
             autoPlay={true}
             autoPlayInterval={5000}
             showIndicators={true}
-            showArrows={true}
-            className="shadow-xl"
+            showArrows={false}
+            className="shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
           />
         </div>
 

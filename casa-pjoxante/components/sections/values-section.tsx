@@ -64,7 +64,7 @@ const ValoresSection = React.forwardRef<HTMLElement, ValoresSectionProps>(
             return (
               <Card key={index} className="group hover:shadow-lg transition-all duration-300 border-[#C1DCAB]/95 
                                           hover:border-[#3E8D35] hover:scale-100 
-                                          hover:-translate-y-2
+                                          hover:-translate-y-0.5
                                           transform" 
               >
                 <CardContent className="p-6 text-center space-y-4">

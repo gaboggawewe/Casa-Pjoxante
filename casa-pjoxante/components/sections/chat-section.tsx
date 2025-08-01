@@ -27,7 +27,7 @@ const ChatSection = React.forwardRef<HTMLElement, ChatSectionProps>(
     React.useEffect(() => {
       const interval = setInterval(() => {
         setIndex((prev) => (prev + 1) % suggestions.length)
-      }, 3500)
+      }, 5000)
       return () => clearInterval(interval)
     }, [])
 
