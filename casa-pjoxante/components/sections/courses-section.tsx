@@ -47,7 +47,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
         id: "2", 
         title: "Arte y Transformación Social",
         description: "Explora herramientas artísticas como medios de expresión, sanación y construcción de identidad comunitaria.",
-        image: "/api/placeholder/400/250",
+        image: "/FotosCursos/curso_ceramica2.jpeg",
         duration: "6 semanas",
         startDate: "22 de Marzo",
         capacity: 20,
@@ -59,7 +59,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
         id: "3",
         title: "Salud Comunitaria Integral",
         description: "Desarrolla competencias para promover la salud desde una perspectiva holística e intercultural.",
-        image: "/api/placeholder/400/250",
+        image: "/FotosCursos/curso_yoga.jpg ",
         duration: "10 semanas",
         startDate: "5 de Abril",
         capacity: 30,
@@ -120,10 +120,10 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
             Nuestros Cursos
           </h2>
           <p className={cn(
-            "text-gray-600 font-century max-w-3xl mx-auto",
+            "text-black font-century max-w-3xl mx-auto",
             COMPONENT_SIZES.section.subtitle
           )}>
-            Programas de formación diseñados para fortalecer capacidades comunitarias 
+            Conoce nuestros programas de formación diseñados para fortalecer capacidades comunitarias 
             y promover el desarrollo integral de las personas
           </p>
         </div>
@@ -135,7 +135,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
             const StatusIcon = statusInfo.icon
 
             return (
-              <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-pjoxante-green-light/50 hover:border-pjoxante-green">
+              <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-[#C1DCAB]/50 hover:border-[#3E8D35]">
                 <div className="relative h-48 overflow-hidden">
                   <Image
                     src={course.image}
