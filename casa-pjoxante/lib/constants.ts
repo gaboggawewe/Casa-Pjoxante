@@ -28,7 +28,7 @@ export const PJOXANTE_COLORS = {
 export const NAVIGATION_ITEMS = [
   { label: 'Sobre la Casa', href: '#sobre-la-casa' },
   { label: 'Cursos', href: '#cursos' },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Publicaciones', href: '/blog' },
   { label: 'Servicios', href: '#servicios' },
   { label: 'Proyectos', href: '#pack' },
   { label: 'Consultorías', href: '/consultorias' },
