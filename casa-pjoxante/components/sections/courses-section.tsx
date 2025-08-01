@@ -88,10 +88,10 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
             Nuestros Cursos
           </h2>
           <p className={cn(
-            "text-gray-600 font-century max-w-3xl mx-auto",
+            "text-black font-century max-w-3xl mx-auto",
             COMPONENT_SIZES.section.subtitle
           )}>
-            Programas de formación diseñados para fortalecer capacidades comunitarias 
+            Conoce nuestros programas de formación diseñados para fortalecer capacidades comunitarias 
             y promover el desarrollo integral de las personas
           </p>
         </div>

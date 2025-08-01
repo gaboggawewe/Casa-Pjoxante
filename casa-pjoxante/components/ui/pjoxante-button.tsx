@@ -10,7 +10,7 @@ const pjoxanteButtonVariants = cva(
       variant: {
         primary: "bg-[#3E8D35] hover:bg-[#3E8D35]/90 text-white",
         secondary: "bg-[#8C6853] hover:[#49362E] text-white",
-        outline: "border border-[#3E8D35] text-bold text-[#3E8D35] hover:bg-[#3E8D35] hover:text-white",
+        outline: "border border-[#49B59E] text-[#49B59E] hover:bg-[#49B59E] hover:text-white",
         ghost: "hover:bg-[#C1DCAB] hover:text-[#3E8D35]",
         link: "text-[#3E8D35] underline-offset-4 hover:underline",
         donation: "bg-[#3E8D35] hover:bg-[#3E8D35] text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1",
