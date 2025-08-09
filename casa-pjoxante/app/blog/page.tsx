@@ -103,6 +103,7 @@ export default function BlogPage() {
               <div className="space-y-8">
                 <h1 className={cn(
                   "font-bold text-black font-cerco mb-2 text-7xl lg:text-8xl",
+
                   COMPONENT_SIZES.section.title
                 )}>
                   Publicaciones de Casa Pjoxante
@@ -119,7 +120,7 @@ export default function BlogPage() {
         </AnimatedSection>
 
         <AnimatedSection direction="up">
-          <SectionContainer padding="xl" className="pt-16">
+          <SectionContainer padding="xl" className="pt-32">
             <div className="max-w-6xl mx-auto">
               <div className="grid lg:grid-cols-2 gap-8">
                 {mockBlogPosts.map((post) => (

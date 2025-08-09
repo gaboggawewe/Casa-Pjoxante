@@ -10,9 +10,16 @@ import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { Lock, User, Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function AdminPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
+    router.push('/admin/dashboard')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,7 +48,7 @@ export default function AdminPage() {
 
               <CardContent className="space-y-6">
                 {/* Login Form */}
-                <form className="space-y-4">
+                <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-gray-700">
                       Email de administrador
