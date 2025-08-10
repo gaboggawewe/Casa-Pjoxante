@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Navbar } from "@/components/ui/navbar"
@@ -13,10 +13,11 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, Save, Plus, X, GraduationCap, Calendar, Clock, Users } from "lucide-react"
+import { ArrowLeft, Save, Plus, X, GraduationCap, Calendar, Clock, Users, Loader2 } from "lucide-react"
+import { getCoursesDataAdmin, saveCoursesSection, saveCourse, updateCourse, deleteCourse, uploadCourseImage } from "@/services/courses/courses-service"
 
 interface Course {
-  id: string
+  id?: string | number
   title: string
   description: string
   image: string
@@ -24,58 +25,26 @@ interface Course {
   startDate: string
   capacity: number
   category: string
+  published: boolean
 }
 
 export default function EditCoursesSection() {
   const router = useRouter()
   
-  const [coursesData, setCoursesData] = useState({
-    title: "Nuestros Cursos",
-    subtitle: "Conoce nuestros programas de formación diseñados para fortalecer capacidades comunitarias y promover el desarrollo integral de las personas",
-    callToAction: "¿Tienes alguna propuesta de curso o taller? ¡Nos encantaría escucharte!",
-    courses: [
-      {
-        id: "1",
-        title: "Pedagogía del Bienestar Comunitario",
-        description: "Aprende metodologías participativas para el desarrollo de programas educativos centrados en el bienestar colectivo.",
-        image: "/FotosCasaPjoxante/pjoxante-curso.JPG",
-        duration: "8 semanas",
-        startDate: "15 de Marzo",
-        capacity: 25,
-        category: "Educación"
-      },
-      {
-        id: "2", 
-        title: "Arte y Transformación Social",
-        description: "Explora herramientas artísticas como medios de expresión, sanación y construcción de identidad comunitaria.",
-        image: "/FotosCasaPjoxante/pjoxante-arte.jpg",
-        duration: "6 semanas",
-        startDate: "22 de Marzo",
-        capacity: 20,
-        category: "Arte"
-      },
-      {
-        id: "3",
-        title: "Salud Comunitaria Integral",
-        description: "Desarrolla competencias para promover la salud desde una perspectiva holística e intercultural.",
-        image: "/FotosCasaPjoxante/pojoxante-curso-2.JPG",
-        duration: "10 semanas",
-        startDate: "5 de Abril",
-        capacity: 30,
-        category: "Salud"
-      },
-      {
-        id: "4",
-        title: "Tecnologías Apropiadas para el Desarrollo",
-        description: "Conoce y crea soluciones tecnológicas sostenibles adaptadas a contextos comunitarios.",
-        image: "/FotosCasaPjoxante/pjoxante-alumnos.JPG",
-        duration: "12 semanas",
-        startDate: "Próximamente",
-        capacity: 15,
-        category: "Tecnología"
-      }
-    ] as Course[]
+  const [coursesData, setCoursesData] = useState<{
+    title: string
+    subtitle: string
+    published: boolean
+    courses: Course[]
+  }>({
+    title: "",
+    subtitle: "",
+    published: true,
+    courses: []
   })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
   const [newCourse, setNewCourse] = useState({
     title: "",
@@ -84,33 +53,138 @@ export default function EditCoursesSection() {
     duration: "",
     startDate: "",
     capacity: 20,
-    category: ""
+    category: "",
+    published: true
   })
+  const [newCourseFile, setNewCourseFile] = useState<File | null>(null)
+
+  // Cargar datos desde la base de datos
+  useEffect(() => {
+    loadCoursesData()
+  }, [])
+
+  const loadCoursesData = async () => {
+    try {
+      const result = await getCoursesDataAdmin()
+      if (result.data) {
+        const { section, courses } = result.data
+        if (section) {
+          setCoursesData({
+            title: section.title,
+            subtitle: section.subtitle,
+            published: section.published,
+            courses: courses.map(course => ({
+              id: course.id,
+              title: course.title,
+              description: course.description,
+              image: course.image_url,
+              duration: course.duration,
+              startDate: course.start_date ? new Date(course.start_date).toLocaleDateString('es-ES') : 'Próximamente',
+              capacity: course.capacity || 20,
+              category: course.category,
+              published: course.published
+            }))
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Error loading courses data:', error)
+      alert('Error al cargar los datos')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const categories = ["Educación", "Arte", "Salud", "Tecnología", "Desarrollo", "Sostenibilidad", "Comunicación", "Liderazgo"]
 
-  const handleSave = () => {
-    // Aquí se implementará la lógica para guardar en la base de datos
-    alert("Cambios guardados correctamente (simulado)")
-    router.push('/admin/dashboard')
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      // Guardar la sección
+      const sectionResult = await saveCoursesSection({
+        title: coursesData.title,
+        subtitle: coursesData.subtitle,
+        published: coursesData.published
+      })
+
+      if (sectionResult.error) {
+        throw new Error(sectionResult.error)
+      }
+
+      alert("Cambios guardados correctamente")
+      router.push('/admin/dashboard')
+    } catch (error) {
+      console.error('Error saving:', error)
+      alert('Error al guardar los cambios')
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const handleAddCourse = () => {
-    if (newCourse.title && newCourse.description && newCourse.image && newCourse.duration && newCourse.startDate && newCourse.category) {
-      const newId = (coursesData.courses.length + 1).toString()
-      setCoursesData({
-        ...coursesData,
-        courses: [...coursesData.courses, { ...newCourse, id: newId }]
-      })
-      setNewCourse({
-        title: "",
-        description: "",
-        image: "",
-        duration: "",
-        startDate: "",
-        capacity: 20,
-        category: ""
-      })
+  const handleAddCourse = async () => {
+    if (newCourseFile && newCourse.title && newCourse.description && newCourse.duration && newCourse.startDate && newCourse.category) {
+      setUploading(true)
+      try {
+        // Generar nombre único para el archivo
+        const timestamp = Date.now()
+        const fileName = `course-image-${timestamp}.${newCourseFile.name.split('.').pop()}`
+        
+        // Subir imagen a Supabase Storage
+        const uploadResult = await uploadCourseImage(newCourseFile, fileName)
+        if (uploadResult.error) {
+          throw new Error(uploadResult.error)
+        }
+
+        const result = await saveCourse({
+          title: newCourse.title,
+          description: newCourse.description,
+          image_url: uploadResult.data!,
+          duration: newCourse.duration,
+          start_date: newCourse.startDate ? new Date(newCourse.startDate).toISOString().split('T')[0] : null,
+          capacity: newCourse.capacity,
+          category: newCourse.category,
+          published: newCourse.published
+        })
+
+        if (result.error) {
+          throw new Error(result.error)
+        }
+
+        // Actualizar estado local
+        if (result.data) {
+          setCoursesData({
+            ...coursesData,
+            courses: [...coursesData.courses, {
+              id: result.data.id,
+              title: result.data.title,
+              description: result.data.description,
+              image: result.data.image_url,
+              duration: result.data.duration,
+              startDate: result.data.start_date ? new Date(result.data.start_date).toLocaleDateString('es-ES') : 'Próximamente',
+              capacity: result.data.capacity || 20,
+              category: result.data.category,
+              published: result.data.published
+            }]
+          })
+        }
+        setNewCourse({
+          title: "",
+          description: "",
+          image: "",
+          duration: "",
+          startDate: "",
+          capacity: 20,
+          category: "",
+          published: true
+        })
+        setNewCourseFile(null)
+        alert('Curso agregado correctamente')
+      } catch (error) {
+        console.error('Error adding course:', error)
+        alert('Error al agregar el curso')
+      } finally {
+        setUploading(false)
+      }
     }
   }
 
@@ -135,13 +209,26 @@ export default function EditCoursesSection() {
     if (file) {
       const imageUrl = URL.createObjectURL(file)
       if (courseId) {
-        // Actualizar curso existente
+        // Para curso existente, necesitaríamos implementar actualización de imagen
+        // Por ahora solo mostraremos la nueva imagen
         handleUpdateCourse(courseId, 'image', imageUrl)
       } else {
         // Nuevo curso
+        setNewCourseFile(file)
         setNewCourse({ ...newCourse, image: imageUrl })
       }
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-pjoxante-green" />
+          <p className="mt-2 text-gray-600 font-century">Cargando datos...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -215,17 +302,24 @@ export default function EditCoursesSection() {
                       />
                     </div>
 
-                    {/* Call to Action */}
-                    <div className="space-y-2">
-                      <Label htmlFor="callToAction" className="font-century font-medium">
-                        Texto de Llamado a la Acción
-                      </Label>
-                      <Input
-                        id="callToAction"
-                        value={coursesData.callToAction}
-                        onChange={(e) => setCoursesData({ ...coursesData, callToAction: e.target.value })}
-                        className="font-century"
+                  </div>
+
+                  {/* Estado de Publicación */}
+                  <div className="space-y-2">
+                    <Label className="font-century font-medium">
+                      Estado de Publicación
+                    </Label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="sectionPublished"
+                        checked={coursesData.published}
+                        onChange={(e) => setCoursesData({ ...coursesData, published: e.target.checked })}
+                        className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
                       />
+                      <Label htmlFor="sectionPublished" className="font-century text-sm">
+                        Publicar sección en la página principal
+                      </Label>
                     </div>
                   </div>
 
@@ -334,6 +428,20 @@ export default function EditCoursesSection() {
                               onChange={(e) => handleImageFileChange(e, course.id)}
                               className="text-sm"
                             />
+
+                            {/* Estado de publicación del curso */}
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id={`course-published-${course.id}`}
+                                checked={course.published}
+                                onChange={(e) => handleUpdateCourse(course.id, 'published', e.target.checked)}
+                                className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                              />
+                              <Label htmlFor={`course-published-${course.id}`} className="font-century text-xs">
+                                Publicar curso
+                              </Label>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -452,18 +560,36 @@ export default function EditCoursesSection() {
                           />
                         </div>
                       </div>
+
+                      {/* Estado de publicación para nuevo curso */}
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          id="newCoursePublished"
+                          checked={newCourse.published}
+                          onChange={(e) => setNewCourse({ ...newCourse, published: e.target.checked })}
+                          className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                        />
+                        <Label htmlFor="newCoursePublished" className="font-century text-sm">
+                          Publicar curso
+                        </Label>
+                      </div>
                     </div>
                   </div>
 
                   <div className="pt-2">
                     <PjoxanteButton
                       onClick={handleAddCourse}
-                      disabled={!newCourse.title || !newCourse.description || !newCourse.image || !newCourse.duration || !newCourse.startDate || !newCourse.category}
+                      disabled={!newCourseFile || !newCourse.title || !newCourse.description || !newCourse.duration || !newCourse.startDate || !newCourse.category || uploading}
                       size="sm"
                       className="gap-2"
                     >
-                      <Plus className="h-4 w-4" />
-                      Agregar Curso
+                      {uploading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Plus className="h-4 w-4" />
+                      )}
+                      {uploading ? 'Subiendo...' : 'Agregar Curso'}
                     </PjoxanteButton>
                   </div>
 
@@ -480,10 +606,15 @@ export default function EditCoursesSection() {
                 </PjoxanteButton>
                 <PjoxanteButton
                   onClick={handleSave}
+                  disabled={saving}
                   className="gap-2"
                 >
-                  <Save className="h-4 w-4" />
-                  Guardar Cambios
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  {saving ? 'Guardando...' : 'Guardar Cambios'}
                 </PjoxanteButton>
               </div>
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Navbar } from "@/components/ui/navbar"
 import { Footer } from "@/components/ui/footer"
@@ -11,7 +11,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, Save, Plus, X, Users, Heart, Lightbulb, TreePine, Star, Target, Globe, Handshake } from "lucide-react"
+import { ArrowLeft, Save, Plus, X, Users, Heart, Lightbulb, TreePine, Star, Target, Globe, Handshake, Loader2 } from "lucide-react"
+import { getValuesDataAdmin, saveValuesSection, saveValue, updateValue, deleteValue } from "@/services/values/values-service"
 
 // Iconos disponibles para seleccionar
 const availableIcons = {
@@ -25,81 +26,192 @@ const availableIcons = {
   Handshake
 }
 
+interface ValueData {
+  id?: string | number
+  icon: string
+  title: string
+  description: string
+  orderIndex: number
+  published: boolean
+}
+
 export default function EditValuesSection() {
   const router = useRouter()
   
-  const [valuesData, setValuesData] = useState({
-    title: "Nuestros Valores",
-    subtitle: "Los pilares que guían nuestro trabajo y compromiso con las comunidades",
-    values: [
-      {
-        id: "1",
-        icon: "Users",
-        title: "Solidaridad",
-        description: "Trabajamos unidos para fortalecer los lazos comunitarios y apoyar a quienes más lo necesitan."
-      },
-      {
-        id: "2",
-        icon: "Heart",
-        title: "Unidad",
-        description: "Creemos en la fuerza de la comunidad trabajando junta hacia objetivos comunes."
-      },
-      {
-        id: "3",
-        icon: "TreePine",
-        title: "Ecología",
-        description: "Promovemos prácticas sostenibles y el cuidado del medio ambiente en todas nuestras actividades."
-      },
-      {
-        id: "4",
-        icon: "Lightbulb",
-        title: "Trabajo en Equipo",
-        description: "Valoramos la colaboración y el intercambio de saberes para el desarrollo colectivo."
-      }
-    ]
+  const [valuesData, setValuesData] = useState<{
+    title: string
+    subtitle: string
+    published: boolean
+    values: ValueData[]
+  }>({
+    title: "",
+    subtitle: "",
+    published: true,
+    values: []
   })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
   const [newValue, setNewValue] = useState({
     icon: "Users",
     title: "",
-    description: ""
+    description: "",
+    orderIndex: 0,
+    published: true
   })
 
-  const handleSave = () => {
-    // Aquí se implementará la lógica para guardar en la base de datos
-    alert("Cambios guardados correctamente (simulado)")
-    router.push('/admin/dashboard')
-  }
+  // Cargar datos desde la base de datos
+  useEffect(() => {
+    loadValuesData()
+  }, [])
 
-  const handleAddValue = () => {
-    if (newValue.title && newValue.description) {
-      const newId = (valuesData.values.length + 1).toString()
-      setValuesData({
-        ...valuesData,
-        values: [...valuesData.values, { ...newValue, id: newId }]
-      })
-      setNewValue({ icon: "Users", title: "", description: "" })
+  const loadValuesData = async () => {
+    try {
+      const result = await getValuesDataAdmin()
+      if (result.data) {
+        const { section, values } = result.data
+        if (section) {
+          setValuesData({
+            title: section.title,
+            subtitle: section.subtitle,
+            published: section.published,
+            values: values.map(val => ({
+              id: val.id,
+              icon: val.icon,
+              title: val.title,
+              description: val.description,
+              orderIndex: val.order_index,
+              published: val.published
+            }))
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Error loading values data:', error)
+      alert('Error al cargar los datos')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const handleRemoveValue = (id: string) => {
-    setValuesData({
-      ...valuesData,
-      values: valuesData.values.filter(value => value.id !== id)
-    })
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      // Guardar la sección
+      const sectionResult = await saveValuesSection({
+        title: valuesData.title,
+        subtitle: valuesData.subtitle,
+        published: valuesData.published
+      })
+
+      if (sectionResult.error) {
+        throw new Error(sectionResult.error)
+      }
+
+      alert("Cambios guardados correctamente")
+      router.push('/admin/dashboard')
+    } catch (error) {
+      console.error('Error saving:', error)
+      alert('Error al guardar los cambios')
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const handleUpdateValue = (id: string, field: string, value: string) => {
-    setValuesData({
-      ...valuesData,
-      values: valuesData.values.map(val => 
-        val.id === id ? { ...val, [field]: value } : val
-      )
-    })
+  const handleAddValue = async () => {
+    if (newValue.title && newValue.description) {
+      try {
+        const newOrderIndex = Math.max(...valuesData.values.map(val => val.orderIndex), 0) + 1
+        const result = await saveValue({
+          icon: newValue.icon,
+          title: newValue.title,
+          description: newValue.description,
+          order_index: newOrderIndex,
+          published: newValue.published
+        })
+
+        if (result.error) {
+          throw new Error(result.error)
+        }
+
+        // Actualizar estado local
+        if (result.data) {
+          setValuesData({
+            ...valuesData,
+            values: [...valuesData.values, {
+              id: result.data.id,
+              icon: result.data.icon,
+              title: result.data.title,
+              description: result.data.description,
+              orderIndex: result.data.order_index,
+              published: result.data.published
+            }]
+          })
+        }
+        setNewValue({ icon: "Users", title: "", description: "", orderIndex: 0, published: true })
+        alert('Valor agregado correctamente')
+      } catch (error) {
+        console.error('Error adding value:', error)
+        alert('Error al agregar el valor')
+      }
+    }
+  }
+
+  const handleRemoveValue = async (id: string | number) => {
+    try {
+      const result = await deleteValue(id.toString())
+      if (result.error) {
+        throw new Error(result.error)
+      }
+      
+      setValuesData({
+        ...valuesData,
+        values: valuesData.values.filter(value => value.id !== id)
+      })
+      alert('Valor eliminado correctamente')
+    } catch (error) {
+      console.error('Error removing value:', error)
+      alert('Error al eliminar el valor')
+    }
+  }
+
+  const handleUpdateValue = async (id: string | number, field: string, value: string | boolean) => {
+    try {
+      const updateData: Record<string, any> = {}
+      if (field === 'icon') updateData.icon = value
+      if (field === 'title') updateData.title = value
+      if (field === 'description') updateData.description = value
+      if (field === 'published') updateData.published = value
+
+      const result = await updateValue(id.toString(), updateData)
+      if (result.error) {
+        console.error('Error updating value:', result.error)
+      }
+      
+      setValuesData({
+        ...valuesData,
+        values: valuesData.values.map(val => 
+          val.id === id ? { ...val, [field]: value } : val
+        )
+      })
+    } catch (error) {
+      console.error('Error updating value:', error)
+    }
   }
 
   const getIconComponent = (iconName: string) => {
     return availableIcons[iconName as keyof typeof availableIcons] || Users
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-pjoxante-green" />
+          <p className="mt-2 text-gray-600 font-century">Cargando datos...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -174,6 +286,25 @@ export default function EditValuesSection() {
                     </div>
                   </div>
 
+                  {/* Estado de Publicación */}
+                  <div className="space-y-2">
+                    <Label className="font-century font-medium">
+                      Estado de Publicación
+                    </Label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="sectionPublished"
+                        checked={valuesData.published}
+                        onChange={(e) => setValuesData({ ...valuesData, published: e.target.checked })}
+                        className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                      />
+                      <Label htmlFor="sectionPublished" className="font-century text-sm">
+                        Publicar sección en la página principal
+                      </Label>
+                    </div>
+                  </div>
+
                 </CardContent>
               </Card>
 
@@ -233,6 +364,20 @@ export default function EditValuesSection() {
                               onChange={(e) => handleUpdateValue(value.id, 'description', e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pjoxante-green focus:border-transparent resize-vertical font-century text-sm"
                             />
+
+                            {/* Estado de publicación del valor */}
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id={`value-published-${value.id}`}
+                                checked={value.published}
+                                onChange={(e) => handleUpdateValue(value.id, 'published', e.target.checked)}
+                                className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                              />
+                              <Label htmlFor={`value-published-${value.id}`} className="font-century text-xs">
+                                Publicar valor
+                              </Label>
+                            </div>
                           </div>
                         </div>
                       )
@@ -300,6 +445,20 @@ export default function EditValuesSection() {
                     </div>
                   </div>
 
+                  {/* Estado de publicación para nuevo valor */}
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="newValuePublished"
+                      checked={newValue.published}
+                      onChange={(e) => setNewValue({ ...newValue, published: e.target.checked })}
+                      className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                    />
+                    <Label htmlFor="newValuePublished" className="font-century text-sm">
+                      Publicar valor
+                    </Label>
+                  </div>
+
                   <div className="pt-2">
                     <PjoxanteButton
                       onClick={handleAddValue}
@@ -325,10 +484,15 @@ export default function EditValuesSection() {
                 </PjoxanteButton>
                 <PjoxanteButton
                   onClick={handleSave}
+                  disabled={saving}
                   className="gap-2"
                 >
-                  <Save className="h-4 w-4" />
-                  Guardar Cambios
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  {saving ? 'Guardando...' : 'Guardar Cambios'}
                 </PjoxanteButton>
               </div>
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Navbar } from "@/components/ui/navbar"
@@ -12,96 +12,214 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { ArrowLeft, Save, Plus, X, Image as ImageIcon, Users, Briefcase, TrendingUp } from "lucide-react"
+import { ArrowLeft, Save, Plus, X, Image as ImageIcon, Users, Briefcase, TrendingUp, Loader2 } from "lucide-react"
+import { getProjectsDataAdmin, saveProjectsSection, saveProject, updateProject, deleteProject, uploadProjectImage } from "@/services/projects/projects-service"
+
+interface ProjectData {
+  id?: string | number
+  src: string
+  alt: string
+  title: string
+  description: string
+  orderIndex: number
+  published: boolean
+}
 
 export default function EditProjectsSection() {
   const router = useRouter()
   
-  const [projectsData, setProjectsData] = useState({
-    title: "Proyectos en Acción",
-    subtitle: "Conoce algunos de los proyectos y actividades que desarrollamos junto a las comunidades para construir un futuro más justo y sostenible",
-    projects: [
-      {
-        id: "1",
-        src: "/FotosCasaPjoxante/IMG_2150.JPG",
-        alt: "Taller de arte comunitario",
-        title: "Taller de Arte Comunitario",
-        description: "Fortaleciendo la identidad cultural a través del arte y la expresión creativa."
-      },
-      {
-        id: "2",
-        src: "/FotosCasaPjoxante/IMG_2163.JPG",
-        alt: "Programa de educación ambiental",
-        title: "Educación Ambiental",
-        description: "Promoviendo prácticas sostenibles y cuidado del medio ambiente."
-      },
-      {
-        id: "3",
-        src: "/FotosCasaPjoxante/pjoxante_about.jpeg",
-        alt: "Capacitación en salud comunitaria",
-        title: "Salud Comunitaria",
-        description: "Empoderando a las comunidades con conocimientos de salud preventiva."
-      },
-      {
-        id: "4",
-        src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.34 (2).jpeg",
-        alt: "Huerto urbano comunitario",
-        title: "Huertos Urbanos",
-        description: "Construyendo soberanía alimentaria y espacios de encuentro."
-      },
-      {
-        id: "5",
-        src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.35 (1).jpeg",
-        alt: "Biblioteca comunitaria",
-        title: "Biblioteca Comunitaria",
-        description: "Democratizando el acceso al conocimiento y la educación."
-      }
-    ],
-    stats: {
-      activeProjects: "25+",
-      communities: "8",
-      beneficiaries: "500+"
-    }
+  const [projectsData, setProjectsData] = useState<{
+    title: string
+    subtitle: string
+    activeProjects: number
+    communities: number
+    beneficiaries: number
+    published: boolean
+    projects: ProjectData[]
+  }>({
+    title: "",
+    subtitle: "",
+    activeProjects: 0,
+    communities: 0,
+    beneficiaries: 0,
+    published: true,
+    projects: []
   })
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
   const [newProject, setNewProject] = useState({
     src: "",
     alt: "",
     title: "",
-    description: ""
+    description: "",
+    orderIndex: 0,
+    published: true
   })
+  const [newProjectFile, setNewProjectFile] = useState<File | null>(null)
 
-  const handleSave = () => {
-    // Aquí se implementará la lógica para guardar en la base de datos
-    alert("Cambios guardados correctamente (simulado)")
-    router.push('/admin/dashboard')
-  }
+  // Cargar datos desde la base de datos
+  useEffect(() => {
+    loadProjectsData()
+  }, [])
 
-  const handleAddProject = () => {
-    if (newProject.src && newProject.alt && newProject.title && newProject.description) {
-      const newId = (projectsData.projects.length + 1).toString()
-      setProjectsData({
-        ...projectsData,
-        projects: [...projectsData.projects, { ...newProject, id: newId }]
-      })
-      setNewProject({ src: "", alt: "", title: "", description: "" })
+  const loadProjectsData = async () => {
+    try {
+      const result = await getProjectsDataAdmin()
+      if (result.data) {
+        const { section, projects } = result.data
+        if (section) {
+          setProjectsData({
+            title: section.title,
+            subtitle: section.subtitle,
+            activeProjects: section.active_projects,
+            communities: section.communities,
+            beneficiaries: section.beneficiaries,
+            published: section.published,
+            projects: projects.map(proj => ({
+              id: proj.id,
+              src: proj.image_url,
+              alt: proj.alt_text,
+              title: proj.title,
+              description: proj.description,
+              orderIndex: proj.order_index,
+              published: proj.published
+            }))
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Error loading projects data:', error)
+      alert('Error al cargar los datos')
+    } finally {
+      setLoading(false)
     }
   }
 
-  const handleRemoveProject = (id: string) => {
-    setProjectsData({
-      ...projectsData,
-      projects: projectsData.projects.filter(project => project.id !== id)
-    })
+  const handleSave = async () => {
+    setSaving(true)
+    try {
+      // Guardar la sección
+      const sectionResult = await saveProjectsSection({
+        title: projectsData.title,
+        subtitle: projectsData.subtitle,
+        active_projects: projectsData.activeProjects,
+        communities: projectsData.communities,
+        beneficiaries: projectsData.beneficiaries,
+        published: projectsData.published
+      })
+
+      if (sectionResult.error) {
+        throw new Error(sectionResult.error)
+      }
+
+      alert("Cambios guardados correctamente")
+      router.push('/admin/dashboard')
+    } catch (error) {
+      console.error('Error saving:', error)
+      alert('Error al guardar los cambios')
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const handleUpdateProject = (id: string, field: string, value: string) => {
-    setProjectsData({
-      ...projectsData,
-      projects: projectsData.projects.map(project => 
-        project.id === id ? { ...project, [field]: value } : project
-      )
-    })
+  const handleAddProject = async () => {
+    if (newProjectFile && newProject.alt && newProject.title && newProject.description) {
+      setUploading(true)
+      try {
+        // Generar nombre único para el archivo
+        const timestamp = Date.now()
+        const fileName = `project-image-${timestamp}.${newProjectFile.name.split('.').pop()}`
+        
+        // Subir imagen a Supabase Storage
+        const uploadResult = await uploadProjectImage(newProjectFile, fileName)
+        if (uploadResult.error) {
+          throw new Error(uploadResult.error)
+        }
+
+        const newOrderIndex = Math.max(...projectsData.projects.map(p => p.orderIndex), 0) + 1
+        const result = await saveProject({
+          image_url: uploadResult.data!,
+          alt_text: newProject.alt,
+          title: newProject.title,
+          description: newProject.description,
+          order_index: newOrderIndex,
+          published: newProject.published
+        })
+
+        if (result.error) {
+          throw new Error(result.error)
+        }
+
+        // Actualizar estado local
+        if (result.data) {
+          setProjectsData({
+            ...projectsData,
+            projects: [...projectsData.projects, {
+              id: result.data.id,
+              src: result.data.image_url,
+              alt: result.data.alt_text,
+              title: result.data.title,
+              description: result.data.description,
+              orderIndex: result.data.order_index,
+              published: result.data.published
+            }]
+          })
+        }
+        setNewProject({ src: "", alt: "", title: "", description: "", orderIndex: 0, published: true })
+        setNewProjectFile(null)
+        alert('Proyecto agregado correctamente')
+      } catch (error) {
+        console.error('Error adding project:', error)
+        alert('Error al agregar el proyecto')
+      } finally {
+        setUploading(false)
+      }
+    }
+  }
+
+  const handleRemoveProject = async (id: string | number) => {
+    try {
+      const result = await deleteProject(id.toString())
+      if (result.error) {
+        throw new Error(result.error)
+      }
+      
+      setProjectsData({
+        ...projectsData,
+        projects: projectsData.projects.filter(project => project.id !== id)
+      })
+      alert('Proyecto eliminado correctamente')
+    } catch (error) {
+      console.error('Error removing project:', error)
+      alert('Error al eliminar el proyecto')
+    }
+  }
+
+  const handleUpdateProject = async (id: string | number, field: string, value: string | boolean) => {
+    try {
+      const updateData: Record<string, any> = {}
+      if (field === 'src') updateData.image_url = value
+      if (field === 'alt') updateData.alt_text = value
+      if (field === 'title') updateData.title = value
+      if (field === 'description') updateData.description = value
+      if (field === 'published') updateData.published = value
+
+      const result = await updateProject(id.toString(), updateData)
+      if (result.error) {
+        console.error('Error updating project:', result.error)
+      }
+      
+      setProjectsData({
+        ...projectsData,
+        projects: projectsData.projects.map(project => 
+          project.id === id ? { ...project, [field]: value } : project
+        )
+      })
+    } catch (error) {
+      console.error('Error updating project:', error)
+    }
   }
 
   const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>, projectId?: string) => {
@@ -109,13 +227,26 @@ export default function EditProjectsSection() {
     if (file) {
       const imageUrl = URL.createObjectURL(file)
       if (projectId) {
-        // Actualizar proyecto existente
+        // Para proyecto existente, necesitaríamos implementar actualización de imagen
+        // Por ahora solo mostraremos la nueva imagen
         handleUpdateProject(projectId, 'src', imageUrl)
       } else {
         // Nueva imagen
+        setNewProjectFile(file)
         setNewProject({ ...newProject, src: imageUrl })
       }
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto text-pjoxante-green" />
+          <p className="mt-2 text-gray-600 font-century">Cargando datos...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -207,35 +338,45 @@ export default function EditProjectsSection() {
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Proyectos Activos</Label>
                       <Input
-                        value={projectsData.stats.activeProjects}
-                        onChange={(e) => setProjectsData({
-                          ...projectsData,
-                          stats: { ...projectsData.stats, activeProjects: e.target.value }
-                        })}
+                        value={projectsData.activeProjects}
+                        onChange={(e) => setProjectsData({ ...projectsData, activeProjects: e.target.value })}
                         className="text-center font-bold text-pjoxante-green"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Comunidades Atendidas</Label>
                       <Input
-                        value={projectsData.stats.communities}
-                        onChange={(e) => setProjectsData({
-                          ...projectsData,
-                          stats: { ...projectsData.stats, communities: e.target.value }
-                        })}
+                        value={projectsData.communities}
+                        onChange={(e) => setProjectsData({ ...projectsData, communities: e.target.value })}
                         className="text-center font-bold text-pjoxante-green"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Personas Beneficiadas</Label>
                       <Input
-                        value={projectsData.stats.beneficiaries}
-                        onChange={(e) => setProjectsData({
-                          ...projectsData,
-                          stats: { ...projectsData.stats, beneficiaries: e.target.value }
-                        })}
+                        value={projectsData.beneficiaries}
+                        onChange={(e) => setProjectsData({ ...projectsData, beneficiaries: e.target.value })}
                         className="text-center font-bold text-pjoxante-green"
                       />
+                    </div>
+                  </div>
+
+                  {/* Estado de Publicación */}
+                  <div className="space-y-2">
+                    <Label className="font-century font-medium">
+                      Estado de Publicación
+                    </Label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id="sectionPublished"
+                        checked={projectsData.published}
+                        onChange={(e) => setProjectsData({ ...projectsData, published: e.target.checked })}
+                        className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                      />
+                      <Label htmlFor="sectionPublished" className="font-century text-sm">
+                        Publicar sección en la página principal
+                      </Label>
                     </div>
                   </div>
 
@@ -307,6 +448,20 @@ export default function EditProjectsSection() {
                               onChange={(e) => handleImageFileChange(e, project.id)}
                               className="text-sm"
                             />
+
+                            {/* Estado de publicación del proyecto */}
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="checkbox"
+                                id={`project-published-${project.id}`}
+                                checked={project.published}
+                                onChange={(e) => handleUpdateProject(project.id, 'published', e.target.checked)}
+                                className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                              />
+                              <Label htmlFor={`project-published-${project.id}`} className="font-century text-xs">
+                                Publicar proyecto
+                              </Label>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -391,15 +546,33 @@ export default function EditProjectsSection() {
                     </div>
                   </div>
 
+                  {/* Estado de publicación para nuevo proyecto */}
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id="newProjectPublished"
+                      checked={newProject.published}
+                      onChange={(e) => setNewProject({ ...newProject, published: e.target.checked })}
+                      className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
+                    />
+                    <Label htmlFor="newProjectPublished" className="font-century text-sm">
+                      Publicar proyecto
+                    </Label>
+                  </div>
+
                   <div className="pt-2">
                     <PjoxanteButton
                       onClick={handleAddProject}
-                      disabled={!newProject.src || !newProject.title || !newProject.description || !newProject.alt}
+                      disabled={!newProjectFile || !newProject.title || !newProject.description || !newProject.alt || uploading}
                       size="sm"
                       className="gap-2"
                     >
-                      <Plus className="h-4 w-4" />
-                      Agregar Proyecto
+                      {uploading ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Plus className="h-4 w-4" />
+                      )}
+                      {uploading ? 'Subiendo...' : 'Agregar Proyecto'}
                     </PjoxanteButton>
                   </div>
 
@@ -416,10 +589,15 @@ export default function EditProjectsSection() {
                 </PjoxanteButton>
                 <PjoxanteButton
                   onClick={handleSave}
+                  disabled={saving}
                   className="gap-2"
                 >
-                  <Save className="h-4 w-4" />
-                  Guardar Cambios
+                  {saving ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  {saving ? 'Guardando...' : 'Guardar Cambios'}
                 </PjoxanteButton>
               </div>
 
