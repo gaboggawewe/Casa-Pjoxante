@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Calendar, Clock, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -9,17 +10,8 @@ import { PjoxanteButton } from "@/components/ui/pjoxante-button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { COMPONENT_SIZES } from "@/lib/constants"
-
-interface Course {
-  id: string
-  title: string
-  description: string
-  image: string
-  duration: string
-  startDate: string
-  capacity: number
-  category: string
-}
+import { getCoursesData } from "@/services/courses/courses-service"
+import type { CoursesData } from "@/services/courses/courses-types"
 
 interface CoursesSectionProps {
   className?: string
@@ -27,50 +19,45 @@ interface CoursesSectionProps {
 
 const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
   ({ className }, ref) => {
-    // Mock courses data - replace with real data
-    const courses: Course[] = [
-      {
-        id: "1",
-        title: "Pedagogía del Bienestar Comunitario",
-        description: "Aprende metodologías participativas para el desarrollo de programas educativos centrados en el bienestar colectivo.",
-        image: "/FotosCasaPjoxante/pjoxante-curso.JPG",
-        duration: "8 semanas",
-        startDate: "15 de Marzo",
-        capacity: 25,
-        category: "Educación"
-      },
-      {
-        id: "2", 
-        title: "Arte y Transformación Social",
-        description: "Explora herramientas artísticas como medios de expresión, sanación y construcción de identidad comunitaria.",
-        image: "/FotosCasaPjoxante/pjoxante-arte.jpg",
-        duration: "6 semanas",
-        startDate: "22 de Marzo",
-        capacity: 20,
-        category: "Arte"
-      },
-      {
-        id: "3",
-        title: "Salud Comunitaria Integral",
-        description: "Desarrolla competencias para promover la salud desde una perspectiva holística e intercultural.",
-        image: "/FotosCasaPjoxante/pojoxante-curso-2.JPG",
-        duration: "10 semanas",
-        startDate: "5 de Abril",
-        capacity: 30,
-        category: "Salud"
-      },
-      {
-        id: "4",
-        title: "Tecnologías Apropiadas para el Desarrollo",
-        description: "Conoce y crea soluciones tecnológicas sostenibles adaptadas a contextos comunitarios.",
-        image: "/FotosCasaPjoxante/pjoxante-alumnos.JPG",
-        duration: "12 semanas",
-        startDate: "Próximamente",
-        capacity: 15,
-        category: "Tecnología"
-      }
-    ]
+    const [coursesData, setCoursesData] = useState<CoursesData | null>(null)
+    const [loading, setLoading] = useState(true)
 
+    useEffect(() => {
+      const loadCoursesData = async () => {
+        try {
+          const result = await getCoursesData()
+          if (result.data) {
+            setCoursesData(result.data)
+          }
+        } catch (error) {
+          console.error('Error loading courses data:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      loadCoursesData()
+    }, [])
+
+    // Si está cargando o no hay datos, no mostrar nada
+    if (loading || !coursesData?.section) {
+      return null
+    }
+
+    const { section, courses } = coursesData
+
+    // Función para formatear la fecha
+    const formatDate = (dateString: string | null) => {
+      if (!dateString) return 'Próximamente'
+      try {
+        return new Date(dateString).toLocaleDateString('es-ES', {
+          day: 'numeric',
+          month: 'long'
+        })
+      } catch {
+        return dateString
+      }
+    }
 
     return (
       <SectionContainer
@@ -85,14 +72,13 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
             "font-bold text-pjoxante-green font-cerco mb-4",
             COMPONENT_SIZES.section.title
           )}>
-            Nuestros Cursos
+            {section.title}
           </h2>
           <p className={cn(
             "text-black font-century max-w-3xl mx-auto",
             COMPONENT_SIZES.section.subtitle
           )}>
-            Conoce nuestros programas de formación diseñados para fortalecer capacidades comunitarias 
-            y promover el desarrollo integral de las personas
+            {section.subtitle}
           </p>
         </div>
 
@@ -102,7 +88,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
             <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-pjoxante-green-light/50 hover:border-pjoxante-green">
               <div className="relative h-48 overflow-hidden">
                 <Image
-                  src={course.image}
+                  src={course.image_url}
                   alt={course.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -140,11 +126,11 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
                   </div>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    <span>Inicio: {course.startDate}</span>
+                    <span>Inicio: {formatDate(course.start_date)}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    <span>Capacidad: {course.capacity} participantes</span>
+                    <span>Capacidad: {course.capacity || 0} participantes</span>
                   </div>
                 </div>
               </CardContent>

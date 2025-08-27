@@ -68,7 +68,7 @@
   --chart-1: hsl(112, 43%, 37%); /* pjoxante-green */
   --chart-2: hsl(30, 23%, 62%); /* pjoxante-brown-light */
   --chart-3: hsl(88, 71%, 69%); /* pjoxante-green-light */
-  --chart-4: hsl(167, 48%, 52%); /* pjoxante-turquoise */
+  --chart-4: #3E8D35; /* pjoxante-green */
   --chart-5: hsl(191, 60%, 58%); /* pjoxante-blue */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
@@ -177,11 +177,11 @@
 }
 
 .pjoxante-turquoise {
-  color: #49B59E; /* turquesa */
+  color: #3E8D35; /* verde */
 }
 
 .pjoxante-bg-turquoise {
-  background-color: hsl(167, 48%, 52%);
+  background-color: #3E8D35;
 }
 
 .pjoxante-blue {
