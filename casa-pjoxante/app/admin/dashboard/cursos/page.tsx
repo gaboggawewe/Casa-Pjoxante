@@ -188,20 +188,50 @@ export default function EditCoursesSection() {
     }
   }
 
-  const handleRemoveCourse = (id: string) => {
-    setCoursesData({
-      ...coursesData,
-      courses: coursesData.courses.filter(course => course.id !== id)
-    })
+  const handleRemoveCourse = async (id: string | number) => {
+    try {
+      const result = await deleteCourse(id.toString())
+      if (result.error) {
+        throw new Error(result.error)
+      }
+      
+      setCoursesData({
+        ...coursesData,
+        courses: coursesData.courses.filter(course => course.id !== id)
+      })
+      alert('Curso eliminado correctamente')
+    } catch (error) {
+      console.error('Error removing course:', error)
+      alert('Error al eliminar el curso')
+    }
   }
 
-  const handleUpdateCourse = (id: string, field: keyof Course, value: string | number) => {
-    setCoursesData({
-      ...coursesData,
-      courses: coursesData.courses.map(course => 
-        course.id === id ? { ...course, [field]: value } : course
-      )
-    })
+  const handleUpdateCourse = async (id: string | number, field: keyof Course, value: string | number | boolean) => {
+    try {
+      const updateData: Record<string, any> = {}
+      if (field === 'title') updateData.title = value
+      if (field === 'description') updateData.description = value
+      if (field === 'image') updateData.image_url = value
+      if (field === 'duration') updateData.duration = value
+      if (field === 'startDate') updateData.start_date = value
+      if (field === 'capacity') updateData.capacity = value
+      if (field === 'category') updateData.category = value
+      if (field === 'published') updateData.published = value
+
+      const result = await updateCourse(id.toString(), updateData)
+      if (result.error) {
+        console.error('Error updating course:', result.error)
+      }
+      
+      setCoursesData({
+        ...coursesData,
+        courses: coursesData.courses.map(course => 
+          course.id === id ? { ...course, [field]: value } : course
+        )
+      })
+    } catch (error) {
+      console.error('Error updating course:', error)
+    }
   }
 
   const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>, courseId?: string) => {

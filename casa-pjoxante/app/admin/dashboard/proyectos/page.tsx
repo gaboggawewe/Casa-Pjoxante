@@ -338,24 +338,27 @@ export default function EditProjectsSection() {
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Proyectos Activos</Label>
                       <Input
+                        type="number"
                         value={projectsData.activeProjects}
-                        onChange={(e) => setProjectsData({ ...projectsData, activeProjects: e.target.value })}
+                        onChange={(e) => setProjectsData({ ...projectsData, activeProjects: parseInt(e.target.value) || 0 })}
                         className="text-center font-bold text-pjoxante-green"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Comunidades Atendidas</Label>
                       <Input
+                        type="number"
                         value={projectsData.communities}
-                        onChange={(e) => setProjectsData({ ...projectsData, communities: e.target.value })}
+                        onChange={(e) => setProjectsData({ ...projectsData, communities: parseInt(e.target.value) || 0 })}
                         className="text-center font-bold text-pjoxante-green"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label className="font-century font-medium">Personas Beneficiadas</Label>
                       <Input
+                        type="number"
                         value={projectsData.beneficiaries}
-                        onChange={(e) => setProjectsData({ ...projectsData, beneficiaries: e.target.value })}
+                        onChange={(e) => setProjectsData({ ...projectsData, beneficiaries: parseInt(e.target.value) || 0 })}
                         className="text-center font-bold text-pjoxante-green"
                       />
                     </div>

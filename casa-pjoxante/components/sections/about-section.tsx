@@ -1,10 +1,13 @@
 "use client"
 
 import * as React from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { SectionContainer } from "@/components/ui/section-container"
 import { PhotoCarousel } from "@/components/ui/photo-carousel"
 import { COMPONENT_SIZES } from "@/lib/constants"
+import { getAboutData } from "@/services/about/about-service"
+import type { AboutData } from "@/services/about/about-types"
 
 interface AboutSectionProps {
   className?: string
@@ -12,6 +15,33 @@ interface AboutSectionProps {
 
 const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
   ({ className }, ref) => {
+    const [aboutData, setAboutData] = useState<AboutData | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+      const loadAboutData = async () => {
+        try {
+          const result = await getAboutData()
+          if (result.data) {
+            setAboutData(result.data)
+          }
+        } catch (error) {
+          console.error('Error loading about data:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
+
+      loadAboutData()
+    }, [])
+
+    // Si está cargando o no hay datos, no mostrar nada
+    if (loading || !aboutData?.section) {
+      return null
+    }
+
+    const { section, images } = aboutData
+
     return (
       <SectionContainer
         ref={ref}
@@ -27,7 +57,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
               COMPONENT_SIZES.section.title
             )}
           >
-            Sobre la Casa
+            {section.title}
           </h2>
           <p
             className={cn(
@@ -35,14 +65,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
               COMPONENT_SIZES.section.subtitle
             )}
           >
-            La palabra{" "}
-            <strong className="text-black font-semibold">“pjoxante”</strong>{" "}
-            proviene del mazahua y significa{" "}
-            <strong className="text-black font-semibold"> “ayuda mutua”</strong>{" "}
-            o
-            <strong className="text-black font-semibold"> “te ayudo”</strong>,
-            refiriéndose a la persona que se solidariza contigo para realizar
-            acciones mutuamente beneficiosas.
+            {section.intro_text}
           </p>
 
           {/* NUEVO RECUADRO CENTRADO */}
@@ -72,10 +95,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
                   <span>¿Qué hacemos?</span>
                 </h3>
                 <p className="text-black-700 font-century leading-relaxed">
-                  Desarrollamos proyectos, cursos e investigaciones a partir
-                  del diálogo horizontal con las comunidades, hilando saberes,
-                  filosofías y estrategias diversas para construir soluciones
-                  colectivas a problemáticas reales.
+                  {section.what_we_do_text}
                 </p>
               </div>
 
@@ -85,11 +105,7 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
                   <span>¿Cómo lo hacemos?</span>
                 </h3>
                 <p className="text-black-700 font-century leading-relaxed">
-                  Nos basamos en el trabajo colaborativo, inclusivo e
-                  intercultural. Priorizamos la escucha activa, la solidaridad,
-                  el diálogo, el pensamiento crítico y el valor de la vida,
-                  creando procesos organizativos que transformen nuestras
-                  realidades desde el territorio y el acompañamiento mutuo.
+                  {section.how_we_do_text}
                 </p>
               </div>
             </div>
@@ -98,28 +114,10 @@ const AboutSection = React.forwardRef<HTMLElement, AboutSectionProps>(
           {/* Right Column - Photo Carousel */}
           <div className="relative">
             <PhotoCarousel
-              images={[
-                {
-                  src: "/FotosCasaPjoxante/pjoxante_about.jpeg",
-                  alt: "Casa Pjoxante Inauguración",
-                },
-                {
-                  src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.34 (2).jpeg",
-                  alt: "Casa Pjoxante",
-                },
-                {
-                  src: "/FotosCasaPjoxante/WhatsApp Image 2024-08-19 at 22.07.35 (4).jpeg",
-                  alt: "Casa Pjoxante",
-                },
-                {
-                  src: "/FotosCasaPjoxante/IMG_2150.JPG",
-                  alt: "Casa Pjoxante",
-                },
-                {
-                  src: "/FotosCasaPjoxante/IMG_2163.JPG",
-                  alt: "Casa Pjoxante",
-                },
-              ]}
+              images={images.map(image => ({
+                src: image.image_url,
+                alt: image.alt_text,
+              }))}
               className="shadow-xl hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300"
               autoPlay={true}
               showIndicators={true}

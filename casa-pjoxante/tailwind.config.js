@@ -35,7 +35,7 @@ module.exports = {
           'yellow': '#DDDF4F',
           
           // Complementary colors (max 2 per composition)
-          'turquoise': '#35B39D',
+          'turquoise': '#3E8D35',
           'blue': '#36B5CC',
           'purple': '#523089',
           'lilac': '#9474B2',

@@ -1,14 +1,13 @@
-export interface HeroSection {
-  id: string
-  tagline: string
+import { PublishableEntity } from '../shared/types'
+
+export interface HeroSection extends PublishableEntity {
+  title: string
+  subtitle: string
+  logo_url: string
+  background_image_url: string
   beneficiaries: number
   events: number
   active_projects: number
-  logo_url: string
-  background_image_url: string
-  published: boolean
-  created_at: string
-  updated_at: string
 }
 
 export interface HeroData {

@@ -3,9 +3,9 @@ import { PublishableEntity, OrderableEntity } from '../shared/types'
 export interface ProjectsSection extends PublishableEntity {
   title: string
   subtitle: string
-  active_projects: string
-  communities: string
-  beneficiaries: string
+  active_projects: number
+  communities: number
+  beneficiaries: number
 }
 
 export interface Project extends PublishableEntity, OrderableEntity {

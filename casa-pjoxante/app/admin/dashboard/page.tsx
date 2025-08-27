@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { LogOut, Settings, Edit3, Image, FileText, Users, Briefcase, GraduationCap } from "lucide-react"
+import { LogOut, Settings, Edit3, Image, FileText, Users, Briefcase, GraduationCap, Home } from "lucide-react"
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -53,6 +53,29 @@ export default function AdminDashboard() {
             {/* Dashboard Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
+              {/* Sección Principal (Hero) Card */}
+              <Card className="shadow-lg border-pjoxante-green-light/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-pjoxante-green font-cerco">
+                    <Home className="h-5 w-5" />
+                    Sección Principal
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-600 font-century">
+                    Edita el contenido de la portada, estadísticas, logo e imagen de fondo
+                  </p>
+                  <PjoxanteButton 
+                    size="sm" 
+                    className="w-full gap-2"
+                    onClick={() => router.push('/admin/dashboard/hero')}
+                  >
+                    <Edit3 className="h-4 w-4" />
+                    Editar Portada
+                  </PjoxanteButton>
+                </CardContent>
+              </Card>
+
               {/* Sobre la Casa Card */}
               <Card className="shadow-lg border-pjoxante-green-light/50">
                 <CardHeader>
@@ -155,7 +178,7 @@ export default function AdminDashboard() {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-pjoxante-green font-cerco">4</div>
+                  <div className="text-2xl font-bold text-pjoxante-green font-cerco">5</div>
                   <div className="text-sm text-gray-600">Secciones Editables</div>
                 </div>
                 <div>
