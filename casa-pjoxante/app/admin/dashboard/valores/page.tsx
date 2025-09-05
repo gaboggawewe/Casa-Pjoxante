@@ -158,6 +158,10 @@ export default function EditValuesSection() {
   }
 
   const handleRemoveValue = async (id: string | number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este valor?')) {
+      return
+    }
+
     try {
       const result = await deleteValue(id.toString())
       if (result.error) {

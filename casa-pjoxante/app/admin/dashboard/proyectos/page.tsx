@@ -180,6 +180,10 @@ export default function EditProjectsSection() {
   }
 
   const handleRemoveProject = async (id: string | number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
+      return
+    }
+
     try {
       const result = await deleteProject(id.toString())
       if (result.error) {

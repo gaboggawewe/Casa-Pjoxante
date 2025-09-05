@@ -189,6 +189,10 @@ export default function EditCoursesSection() {
   }
 
   const handleRemoveCourse = async (id: string | number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este curso?')) {
+      return
+    }
+
     try {
       const result = await deleteCourse(id.toString())
       if (result.error) {

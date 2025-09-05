@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils"
 import { SectionContainer } from "@/components/ui/section-container"
 import { PjoxanteButton } from "@/components/ui/pjoxante-button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { getCoursesData } from "@/services/courses/courses-service"
 import type { CoursesData } from "@/services/courses/courses-types"
@@ -85,23 +84,18 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
         {/* Courses Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {courses.map((course) => (
-            <Card key={course.id} className="group hover:shadow-xl transition-all duration-300 overflow-hidden border-pjoxante-green-light/50 hover:border-pjoxante-green">
-              <div className="relative h-48 overflow-hidden">
+            <Card key={course.id} className="group hover:shadow-lg transition-all duration-300 border-[#C1DCAB]/95 hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-0.5 transform overflow-hidden p-0">
+              <div className="relative h-52 overflow-hidden rounded-t-xl">
                 <Image
                   src={course.image_url}
                   alt={course.title}
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
-                <div className="absolute top-4 left-4">
-                  <Badge variant="secondary" className="bg-pjoxante-green text-white">
-                    {course.category}
-                  </Badge>
-                </div>
               </div>
 
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 px-6 pt-6">
                 <h3 className={cn(
                   "font-semibold text-pjoxante-green font-cerco line-clamp-2",
                   COMPONENT_SIZES.card.title
@@ -110,7 +104,7 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
                 </h3>
               </CardHeader>
 
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 px-6 pb-6">
                 <p className={cn(
                   "text-gray-600 font-century line-clamp-3",
                   COMPONENT_SIZES.card.description
@@ -143,9 +137,9 @@ const CoursesSection = React.forwardRef<HTMLElement, CoursesSectionProps>(
           <p className="text-gray-600 font-century mb-6">
             ¿Tienes alguna propuesta de curso o taller? ¡Nos encantaría escucharte!
           </p>
-          <PjoxanteButton variant="outline" size="lg">
+          {/*<PjoxanteButton variant="outline" size="lg">
             Proponer un Curso
-          </PjoxanteButton>
+          </PjoxanteButton>*/}
         </div>
       </SectionContainer>
     )

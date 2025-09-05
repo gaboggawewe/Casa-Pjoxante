@@ -64,7 +64,7 @@ const ServicesSection = React.forwardRef<HTMLElement, ServicesSectionProps>(
             const IconComponent = service.icon
             
             return (
-              <Card key={service.id} className="group hover:shadow-xl transition-all duration-300 border-pjoxante-green-light/50 hover:border-pjoxante-green bg-gradient-to-br from-white to-pjoxante-green-light/10">
+              <Card key={service.id} className="group hover:shadow-lg transition-all duration-300 border-[#C1DCAB]/95 hover:border-[#3E8D35] hover:scale-100 hover:-translate-y-0.5 transform">
                 <CardHeader className="text-center pb-4">
                   <div className="mx-auto w-16 h-16 bg-pjoxante-green-light rounded-full flex items-center justify-center group-hover:bg-pjoxante-green group-hover:text-white transition-colors duration-300 mb-4">
                     <IconComponent className="h-8 w-8 text-pjoxante-green group-hover:text-white" />
