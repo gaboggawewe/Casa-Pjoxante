@@ -49,11 +49,10 @@ const ChatSection = React.forwardRef<HTMLElement, ChatSectionProps>(
                 COMPONENT_SIZES.section.title
               )}
             >
-              <MessageCircle className="h-8 w-8 text-pjoxante-primary" />
-              Chat con Casa Pjoxante
+              Chat con Pjoxantito
             </h2>
 
-            <div className="space-y-4">
+            <div className="space-y-16">
               <p
                 className={cn(
                   "text-black font-century max-w-md mx-auto",
@@ -71,7 +70,7 @@ const ChatSection = React.forwardRef<HTMLElement, ChatSectionProps>(
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.6 }}
-                    className="text-[#8C6853] italic text-center px-6 py-3 rounded-full bg-[#8C6853]/8 shadow-md text-base sm:text-lg font-cerco max-w-xl"
+                    className="text-pjoxante-brown italic text-center text-base sm:text-lg font-cerco max-w-xl"
                   >
                     “{suggestions[index]}”
                   </motion.p>

@@ -180,6 +180,10 @@ export default function EditProjectsSection() {
   }
 
   const handleRemoveProject = async (id: string | number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
+      return
+    }
+
     try {
       const result = await deleteProject(id.toString())
       if (result.error) {
@@ -222,16 +226,32 @@ export default function EditProjectsSection() {
     }
   }
 
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>, projectId?: string) => {
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>, projectId?: string) => {
     const file = e.target.files?.[0]
     if (file) {
-      const imageUrl = URL.createObjectURL(file)
+      const imageUrl = URL.createObjectURL(file) // Solo para preview
       if (projectId) {
-        // Para proyecto existente, necesitaríamos implementar actualización de imagen
-        // Por ahora solo mostraremos la nueva imagen
-        handleUpdateProject(projectId, 'src', imageUrl)
+        // Para proyecto existente, subir imagen y actualizar
+        setUploading(true)
+        try {
+          const timestamp = Date.now()
+          const fileName = `project-image-${projectId}-${timestamp}.${file.name.split('.').pop()}`
+          
+          const uploadResult = await uploadProjectImage(file, fileName)
+          if (uploadResult.error) {
+            throw new Error(uploadResult.error)
+          }
+          
+          // Actualizar con la URL real de Supabase
+          await handleUpdateProject(projectId, 'src', uploadResult.data!)
+        } catch (error) {
+          console.error('Error uploading project image:', error)
+          alert('Error al subir la imagen del proyecto')
+        } finally {
+          setUploading(false)
+        }
       } else {
-        // Nueva imagen
+        // Nuevo proyecto - solo preview
         setNewProjectFile(file)
         setNewProject({ ...newProject, src: imageUrl })
       }
@@ -399,7 +419,7 @@ export default function EditProjectsSection() {
                     {projectsData.projects.map((project) => (
                       <div key={project.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50 relative">
                         <button
-                          onClick={() => handleRemoveProject(project.id)}
+                          onClick={() => project.id && handleRemoveProject(project.id)}
                           className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors z-10"
                         >
                           <X className="h-4 w-4" />
@@ -423,7 +443,7 @@ export default function EditProjectsSection() {
                             <Input
                               placeholder="Título del proyecto"
                               value={project.title}
-                              onChange={(e) => handleUpdateProject(project.id, 'title', e.target.value)}
+                              onChange={(e) => project.id && handleUpdateProject(project.id, 'title', e.target.value)}
                               className="font-cerco font-semibold"
                             />
 
@@ -432,7 +452,7 @@ export default function EditProjectsSection() {
                               rows={3}
                               placeholder="Descripción del proyecto"
                               value={project.description}
-                              onChange={(e) => handleUpdateProject(project.id, 'description', e.target.value)}
+                              onChange={(e) => project.id && handleUpdateProject(project.id, 'description', e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pjoxante-green focus:border-transparent resize-vertical font-century text-sm"
                             />
 
@@ -440,7 +460,7 @@ export default function EditProjectsSection() {
                             <Input
                               placeholder="Texto alternativo de la imagen"
                               value={project.alt}
-                              onChange={(e) => handleUpdateProject(project.id, 'alt', e.target.value)}
+                              onChange={(e) => project.id && handleUpdateProject(project.id, 'alt', e.target.value)}
                               className="text-sm"
                             />
 
@@ -448,7 +468,7 @@ export default function EditProjectsSection() {
                             <Input
                               type="file"
                               accept="image/*"
-                              onChange={(e) => handleImageFileChange(e, project.id)}
+                              onChange={(e) => handleImageFileChange(e, project.id?.toString())}
                               className="text-sm"
                             />
 
@@ -458,7 +478,7 @@ export default function EditProjectsSection() {
                                 type="checkbox"
                                 id={`project-published-${project.id}`}
                                 checked={project.published}
-                                onChange={(e) => handleUpdateProject(project.id, 'published', e.target.checked)}
+                                onChange={(e) => project.id && handleUpdateProject(project.id, 'published', e.target.checked)}
                                 className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
                               />
                               <Label htmlFor={`project-published-${project.id}`} className="font-century text-xs">

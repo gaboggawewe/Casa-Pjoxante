@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { COMPONENT_SIZES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { LogOut, Settings, Edit3, Image, FileText, Users, Briefcase, GraduationCap, Home } from "lucide-react"
+import { LogOut, Settings, Edit3, Image, FileText, Users, Briefcase, GraduationCap, Home, Bot, BookOpen } from "lucide-react"
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -168,6 +168,52 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
 
+              {/* Publicaciones del Blog Card */}
+              <Card className="shadow-lg border-pjoxante-green-light/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-pjoxante-green font-cerco">
+                    <BookOpen className="h-5 w-5" />
+                    Publicaciones del Blog
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-600 font-century">
+                    Crea, edita y gestiona las publicaciones del blog de Casa Pjoxante
+                  </p>
+                  <PjoxanteButton 
+                    size="sm" 
+                    className="w-full gap-2"
+                    onClick={() => router.push('/admin/dashboard/blog')}
+                  >
+                    <Edit3 className="h-4 w-4" />
+                    Gestionar Blog
+                  </PjoxanteButton>
+                </CardContent>
+              </Card>
+
+              {/* Contexto de chat IA Card */}
+              <Card className="shadow-lg border-pjoxante-green-light/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3 text-pjoxante-green font-cerco">
+                    <Bot className="h-5 w-5" />
+                    Contexto de chat IA
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-600 font-century">
+                    Configura el contexto y comportamiento del asistente de IA
+                  </p>
+                  <PjoxanteButton 
+                    size="sm" 
+                    className="w-full gap-2"
+                    onClick={() => router.push('/admin/dashboard/contexto-chat')}
+                  >
+                    <Edit3 className="h-4 w-4" />
+                    Editar Contexto
+                  </PjoxanteButton>
+                </CardContent>
+              </Card>
+
             </div>
 
             {/* Quick Stats */}
@@ -178,7 +224,7 @@ export default function AdminDashboard() {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-pjoxante-green font-cerco">5</div>
+                  <div className="text-2xl font-bold text-pjoxante-green font-cerco">7</div>
                   <div className="text-sm text-gray-600">Secciones Editables</div>
                 </div>
                 <div>

@@ -161,6 +161,10 @@ export default function EditAboutSection() {
   }
 
   const handleRemoveImage = async (index: number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta imagen?')) {
+      return
+    }
+
     const imageToRemove = aboutContent.images[index]
     if (imageToRemove.id) {
       try {
@@ -284,7 +288,7 @@ export default function EditAboutSection() {
                   {/* ¿Qué hacemos? */}
                   <div className="space-y-2">
                     <Label htmlFor="whatWeDoText" className="font-century font-medium">
-                      ¿Qué hacemos?
+                      ¿Quiénes somos?
                     </Label>
                     <textarea
                       id="whatWeDoText"
@@ -298,7 +302,7 @@ export default function EditAboutSection() {
                   {/* ¿Cómo lo hacemos? */}
                   <div className="space-y-2">
                     <Label htmlFor="howWeDoText" className="font-century font-medium">
-                      ¿Cómo lo hacemos?
+                      ¿Cómo trabajamos?
                     </Label>
                     <textarea
                       id="howWeDoText"

@@ -1,3 +1,7 @@
+"use client"
+
+import { useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { Navbar } from "@/components/ui/navbar"
 import { HeroSection } from "@/components/sections/hero-section"
 import { ChatSection } from "@/components/sections/chat-section"
@@ -10,8 +14,35 @@ import { ServicesSection } from "@/components/sections/services-section"
 import { Footer } from "@/components/ui/footer"
 import { DonationButton } from "@/components/ui/donation-button"
 import { AnimatedSection } from "@/components/ui/animated-section"
+import { useSmoothScroll } from "@/hooks/use-smooth-scroll"
+import { useBlogCache } from "@/hooks/use-blog-cache"
 
 export default function Home() {
+  const { scrollToSection } = useSmoothScroll()
+  const { preloadBlogData } = useBlogCache()
+  const pathname = usePathname()
+  
+  useEffect(() => {
+    // Solo ejecutar en la página principal
+    if (pathname !== '/') return
+    
+    // Precargar datos del blog después de 1 segundo para navegación instantánea
+    const preloadTimer = setTimeout(() => {
+      preloadBlogData()
+    }, 1000)
+    
+    // Verificar si hay un hash en la URL al cargar la página
+    const hash = window.location.hash
+    if (hash) {
+      const sectionId = hash.substring(1)
+      // Hacer scroll después de que la página se haya cargado completamente
+      setTimeout(() => {
+        scrollToSection(sectionId)
+      }, 500)
+    }
+    
+    return () => clearTimeout(preloadTimer)
+  }, [scrollToSection, pathname, preloadBlogData])
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -47,7 +78,9 @@ export default function Home() {
           </div>
         </AnimatedSection>
         <AnimatedSection direction="up">
-          <BlogSection />
+          <div id="publicaciones">
+            <BlogSection showHeader={true} maxPosts={4} />
+          </div>
         </AnimatedSection>
         <AnimatedSection direction="up">
           <div id="servicios">

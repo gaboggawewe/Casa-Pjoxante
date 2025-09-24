@@ -29,6 +29,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         
         // Si no estamos en la página principal, navegar primero
         if (pathname !== '/') {
+          // Navegar a la página principal con el hash
           router.push(`/${href}`)
         } else {
           // Si estamos en la página principal, hacer scroll suave
@@ -80,6 +81,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                   <Link
                     key={item.label}
                     href={item.href}
+                    prefetch={true}
                     className="px-3 py-2 text-base text-black rounded-md 
                     hover:underline
                     hover:drop-shadow-lg transition duration-300 transform 
@@ -124,6 +126,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                     <Link
                       key={item.label}
                       href={item.href}
+                      prefetch={true}
                       className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-pjoxante-green hover:bg-pjoxante-green-light/50 rounded-md transition-colors font-century"
                       onClick={() => setIsMenuOpen(false)}
                     >

@@ -189,6 +189,10 @@ export default function EditCoursesSection() {
   }
 
   const handleRemoveCourse = async (id: string | number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar este curso?')) {
+      return
+    }
+
     try {
       const result = await deleteCourse(id.toString())
       if (result.error) {
@@ -234,16 +238,32 @@ export default function EditCoursesSection() {
     }
   }
 
-  const handleImageFileChange = (e: React.ChangeEvent<HTMLInputElement>, courseId?: string) => {
+  const handleImageFileChange = async (e: React.ChangeEvent<HTMLInputElement>, courseId?: string) => {
     const file = e.target.files?.[0]
     if (file) {
-      const imageUrl = URL.createObjectURL(file)
+      const imageUrl = URL.createObjectURL(file) // Solo para preview
       if (courseId) {
-        // Para curso existente, necesitaríamos implementar actualización de imagen
-        // Por ahora solo mostraremos la nueva imagen
-        handleUpdateCourse(courseId, 'image', imageUrl)
+        // Para curso existente, subir imagen y actualizar
+        setUploading(true)
+        try {
+          const timestamp = Date.now()
+          const fileName = `course-image-${courseId}-${timestamp}.${file.name.split('.').pop()}`
+          
+          const uploadResult = await uploadCourseImage(file, fileName)
+          if (uploadResult.error) {
+            throw new Error(uploadResult.error)
+          }
+          
+          // Actualizar con la URL real de Supabase
+          await handleUpdateCourse(courseId, 'image', uploadResult.data!)
+        } catch (error) {
+          console.error('Error uploading course image:', error)
+          alert('Error al subir la imagen del curso')
+        } finally {
+          setUploading(false)
+        }
       } else {
-        // Nuevo curso
+        // Nuevo curso - solo preview
         setNewCourseFile(file)
         setNewCourse({ ...newCourse, image: imageUrl })
       }
@@ -369,7 +389,7 @@ export default function EditCoursesSection() {
                     {coursesData.courses.map((course) => (
                       <div key={course.id} className="p-4 border border-gray-200 rounded-lg bg-gray-50 relative">
                         <button
-                          onClick={() => handleRemoveCourse(course.id)}
+                          onClick={() => course.id && handleRemoveCourse(course.id)}
                           className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors z-10"
                         >
                           <X className="h-4 w-4" />
@@ -398,7 +418,7 @@ export default function EditCoursesSection() {
                             <Input
                               placeholder="Título del curso"
                               value={course.title}
-                              onChange={(e) => handleUpdateCourse(course.id, 'title', e.target.value)}
+                              onChange={(e) => course.id && handleUpdateCourse(course.id, 'title', e.target.value)}
                               className="font-cerco font-semibold"
                             />
 
@@ -407,7 +427,7 @@ export default function EditCoursesSection() {
                               rows={3}
                               placeholder="Descripción del curso"
                               value={course.description}
-                              onChange={(e) => handleUpdateCourse(course.id, 'description', e.target.value)}
+                              onChange={(e) => course.id && handleUpdateCourse(course.id, 'description', e.target.value)}
                               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pjoxante-green focus:border-transparent resize-vertical font-century text-sm"
                             />
 
@@ -416,7 +436,7 @@ export default function EditCoursesSection() {
                               {/* Categoría */}
                               <select
                                 value={course.category}
-                                onChange={(e) => handleUpdateCourse(course.id, 'category', e.target.value)}
+                                onChange={(e) => course.id && handleUpdateCourse(course.id, 'category', e.target.value)}
                                 className="px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-pjoxante-green"
                               >
                                 <option value="">Categoría</option>
@@ -429,7 +449,7 @@ export default function EditCoursesSection() {
                               <Input
                                 placeholder="Duración"
                                 value={course.duration}
-                                onChange={(e) => handleUpdateCourse(course.id, 'duration', e.target.value)}
+                                onChange={(e) => course.id && handleUpdateCourse(course.id, 'duration', e.target.value)}
                                 className="text-sm"
                               />
 
@@ -437,7 +457,7 @@ export default function EditCoursesSection() {
                               <Input
                                 placeholder="Fecha de inicio"
                                 value={course.startDate}
-                                onChange={(e) => handleUpdateCourse(course.id, 'startDate', e.target.value)}
+                                onChange={(e) => course.id && handleUpdateCourse(course.id, 'startDate', e.target.value)}
                                 className="text-sm"
                               />
 
@@ -446,7 +466,7 @@ export default function EditCoursesSection() {
                                 type="number"
                                 placeholder="Capacidad"
                                 value={course.capacity}
-                                onChange={(e) => handleUpdateCourse(course.id, 'capacity', parseInt(e.target.value) || 0)}
+                                onChange={(e) => course.id && handleUpdateCourse(course.id, 'capacity', parseInt(e.target.value) || 0)}
                                 className="text-sm"
                               />
                             </div>
@@ -455,7 +475,7 @@ export default function EditCoursesSection() {
                             <Input
                               type="file"
                               accept="image/*"
-                              onChange={(e) => handleImageFileChange(e, course.id)}
+                              onChange={(e) => handleImageFileChange(e, course.id?.toString())}
                               className="text-sm"
                             />
 
@@ -465,7 +485,7 @@ export default function EditCoursesSection() {
                                 type="checkbox"
                                 id={`course-published-${course.id}`}
                                 checked={course.published}
-                                onChange={(e) => handleUpdateCourse(course.id, 'published', e.target.checked)}
+                                onChange={(e) => course.id && handleUpdateCourse(course.id, 'published', e.target.checked)}
                                 className="w-4 h-4 text-pjoxante-green focus:ring-pjoxante-green border-gray-300 rounded"
                               />
                               <Label htmlFor={`course-published-${course.id}`} className="font-century text-xs">

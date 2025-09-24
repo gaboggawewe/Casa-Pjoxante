@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Send } from 'lucide-react'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
@@ -20,14 +20,26 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Soy el asistente de Casa Pjoxante, puedes preguntarme lo que quieras sobre nosotros. ¡Estoy aquí para ayudarte!',
+      text: 'Soy Pjoxantito, el asistente de Casa Pjoxante, puedes preguntarme lo que quieras sobre nosotros. ¡Estoy aquí para ayudarte!',
       sender: 'assistant'
     }
   ])
   const [inputMessage, setInputMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
 
-  const handleSendMessage = () => {
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
+    }
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return
 
     const newMessage: Message = {
@@ -36,20 +48,43 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
       sender: 'user'
     }
 
+    const messageToSend = inputMessage
     setMessages(prev => [...prev, newMessage])
     setInputMessage('')
     setIsLoading(true)
 
-    // Simulate assistant response
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: messageToSend }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Error en la respuesta del servidor')
+      }
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        text: 'Gracias por tu mensaje. ¿Cómo puedo ayudarte con nuestros programas?',
+        text: data.respuesta,
         sender: 'assistant'
       }
       setMessages(prev => [...prev, assistantMessage])
+    } catch (error) {
+      console.error('Error enviando mensaje:', error)
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: 'Lo siento, hubo un problema al procesar tu mensaje. Por favor intenta nuevamente.',
+        sender: 'assistant'
+      }
+      setMessages(prev => [...prev, errorMessage])
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -61,11 +96,11 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
 
   return (
     <div className={cn(
-      "rounded-lg p-6 flex flex-col w-full h-[450px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
+      "rounded-lg p-6 flex flex-col w-full h-[550px] shadow-xl border-2 border-[#3E8D35]/50 hover:shadow-2xl hover:-translate-y-0.5 transition-all duration-300",
       className
     )}>
       {/* Header */}
-      <div className="flex items-center pb-4 border-b-2 border-[#3E8D35]/30">
+      <div className="flex items-center pb-1 border-b-2 border-[#3E8D35]/30">
         <div className="w-14 h-14 rounded-full bg-[#3E8D35] mr-6 flex items-center justify-center p-2">
           <Image
             src="/LogosCasaPjoxante/logo-arbol-blanco-sencillo.png"
@@ -76,12 +111,12 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
           />
         </div>
         <div className="text-[#3E8D35] font-bold text-xl font-century">
-        Hola! ¿En que puedo ayudarte? ☺️
+        ¡Hola! ¿En que puedo ayudarte? ☺️
         </div>
       </div>
 
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto py-6 min-h-0">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto py-2 min-h-0 scrollbar-hide" style={{scrollbarWidth: 'none', msOverflowStyle: 'none'}}>
         <div className="space-y-3">
           {messages.map((message) => (
             <div
@@ -101,11 +136,12 @@ export function ChatInterface({ className }: ChatInterfaceProps) {
               Escribiendo...
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
       </div>
 
       {/* Input */}
-      <div className="pt-4 border-t-2 border-[#3E8D35]/30">
+      <div className="pt-1 border-t-2 border-[#3E8D35]/30">
         <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}>
           <textarea
             value={inputMessage}
