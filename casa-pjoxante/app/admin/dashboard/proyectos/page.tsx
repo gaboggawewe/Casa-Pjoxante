@@ -203,7 +203,7 @@ export default function EditProjectsSection() {
 
   const handleUpdateProject = async (id: string | number, field: string, value: string | boolean) => {
     try {
-      const updateData: Record<string, any> = {}
+      const updateData: Record<string, string | boolean> = {}
       if (field === 'src') updateData.image_url = value
       if (field === 'alt') updateData.alt_text = value
       if (field === 'title') updateData.title = value

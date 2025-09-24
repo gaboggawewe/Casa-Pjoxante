@@ -107,7 +107,7 @@ export default function NewBlogPostPage() {
 
       const createdPost = result.data
       let needsUpdate = false
-      let updatedData: Partial<BlogPost> = {}
+      const updatedData: Partial<BlogPost> = {}
 
       // Subir imagen principal si existe
       if (mainImageFile) {

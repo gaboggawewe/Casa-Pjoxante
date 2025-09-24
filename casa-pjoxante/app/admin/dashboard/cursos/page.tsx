@@ -212,7 +212,7 @@ export default function EditCoursesSection() {
 
   const handleUpdateCourse = async (id: string | number, field: keyof Course, value: string | number | boolean) => {
     try {
-      const updateData: Record<string, any> = {}
+      const updateData: Record<string, string | number | boolean> = {}
       if (field === 'title') updateData.title = value
       if (field === 'description') updateData.description = value
       if (field === 'image') updateData.image_url = value
