@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Calendar, User, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -9,37 +9,34 @@ import { SectionContainer } from "@/components/ui/section-container"
 import { PjoxanteButton } from "@/components/ui/pjoxante-button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { COMPONENT_SIZES } from "@/lib/constants"
-import { getBlogPostsData } from "@/services/blog/blog-service"
-import type { BlogPost } from "@/services/blog/blog-types"
+import { useBlogCache } from "@/hooks/use-blog-cache"
 
 interface BlogSectionProps {
   className?: string
   showHeader?: boolean
   maxPosts?: number
+  id?: string
 }
 
 const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
-  ({ className, showHeader = true, maxPosts = 6 }, ref) => {
-    const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
-    const [loading, setLoading] = useState(true)
+  ({ className, showHeader = true, maxPosts = 6, id }, ref) => {
+    const { blogPosts: allBlogPosts, loading, error, loadBlogPosts, hasCachedData } = useBlogCache()
     const router = useRouter()
+    
+    // Obtener solo los posts que necesitamos según maxPosts
+    const blogPosts = allBlogPosts.slice(0, maxPosts)
 
     useEffect(() => {
-      const loadBlogPosts = async () => {
-        try {
-          const result = await getBlogPostsData()
-          if (result.data) {
-            setBlogPosts(result.data.slice(0, maxPosts))
-          }
-        } catch (error) {
-          console.error('Error loading blog posts:', error)
-        } finally {
-          setLoading(false)
-        }
+      // Si ya tenemos datos en caché, no necesitamos cargar
+      if (hasCachedData) {
+        console.log('BlogSection: Using cached data')
+        return
       }
-
+      
+      // Solo cargar si no hay datos en caché
+      console.log('BlogSection: Loading blog posts...')
       loadBlogPosts()
-    }, [maxPosts])
+    }, [loadBlogPosts, hasCachedData])
 
     const handleReadMore = (slug: string) => {
       router.push(`/blog/${slug}`)
@@ -65,12 +62,12 @@ const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
       }
     }
 
-    // Si está cargando o no hay datos, mostrar estado de carga o vacío
+    // Si está cargando, mostrar estado de carga
     if (loading) {
       return (
         <SectionContainer
           ref={ref}
-          id="publicaciones"
+          id={id || "publicaciones"}
           className={cn(className)}
           padding="xl"
         >
@@ -81,11 +78,34 @@ const BlogSection = React.forwardRef<HTMLElement, BlogSectionProps>(
       )
     }
 
+    // Si hay error, mostrar mensaje de error
+    if (error) {
+      return (
+        <SectionContainer
+          ref={ref}
+          id={id || "publicaciones"}
+          className={cn(className)}
+          padding="xl"
+        >
+          <div className="text-center">
+            <p className="text-red-500 mb-4">{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-pjoxante-green text-white rounded-md hover:bg-pjoxante-green-dark transition-colors"
+            >
+              Reintentar
+            </button>
+          </div>
+        </SectionContainer>
+      )
+    }
+
+    // Si no hay posts pero no hay error
     if (!blogPosts.length) {
       return (
         <SectionContainer
           ref={ref}
-          id="publicaciones"
+          id={id || "publicaciones"}
           className={cn(className)}
           padding="xl"
         >
