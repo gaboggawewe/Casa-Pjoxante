@@ -274,7 +274,7 @@ export default function EditAboutSection() {
                   {/* Texto de Introducción */}
                   <div className="space-y-2">
                     <Label htmlFor="introText" className="font-century font-medium">
-                      Texto de Introducción (Significado de "pjoxante")
+                      Texto de Introducción (Significado de &quot;pjoxante&quot;)
                     </Label>
                     <textarea
                       id="introText"
